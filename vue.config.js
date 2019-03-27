@@ -18,7 +18,7 @@ module.exports = {
   // 跨域代理
   devServer: {
     port: 8048, // 监听端口号  默认 8080
-    host: 'localhost',
+    // host: 'localhost',
     disableHostCheck: true, // 禁用webpack热重载检查 解决热更新失效问题（vue ui启动控制台还是有警告，用npm启动没有警告）
     open: false, // 配置自动启动浏览器  默认值 false
     // proxy: 'http://localhost:4000' // 配置跨域处理,只有一个代理

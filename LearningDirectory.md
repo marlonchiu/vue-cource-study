@@ -15,6 +15,52 @@
     a. 动态路由
     b. 嵌套路由
     c. 命名路由
-    d. 命名视图（组件）
+
+        ``` javascript
+            // 路由的地方配置上名字
+            {
+                path: '/about',
+                name: 'about',   // 路由命名
+                component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+            }
+
+            <!-- <router-link to="/about">About</router-link> -->
+            // 等价于
+            <router-link :to="{name: 'about'}">About</router-link>
+        ```
+
+    d. 命名视图
+
+        ``` javascript
+            // 路由的地方配置上名字
+            {
+                path: '/named_view',
+                components: {
+                    default: () => import('@/components/child.vue'),
+                    email: () => import('@/components/email.vue'),
+                    tel: () => import('@/components/tel.vue')
+                }
+            }
+
+            // 在App.vue 页面（学习了）
+            <router-view/>
+            <router-view name="email"/>
+            <router-view name="tel"/>
+        ```
+
 3) JS 操作路由
 4）重定向和别名
+
+```
+    // 重定向的几种写法
+    {
+        path: '/main',
+        // redirect: '/',
+        redirect: {
+            name: 'home'
+        },
+        redirect: to => {
+            console.log(to)   // 在此重定向中做判断跳转
+        }
+    }
+```
