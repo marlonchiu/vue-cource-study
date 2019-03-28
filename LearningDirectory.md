@@ -124,3 +124,34 @@ export default {
         redirect: to => '/'
     }
 ```
+
+## 路由详解（二） 进阶篇
+
+1）路由组件传参
+```
+  // 参数形式
+  * 要使用的组件在props中进行接收（一般先在props中先定义默认类型）
+  {
+    path: '/argu/:name',
+    name: 'argu',
+    component: () => import('@/components/argu.vue'),
+    props: true // 里边的参数会使用route.params的值
+  },
+
+  // 对象模式
+  * 要使用的组件在props中进行接收（一般先在props中先定义默认类型）
+  {
+    path: '/about',
+    name: 'about',
+    alias: '/about_page', // 别名
+    component: () => import('../views/About.vue'),
+    props: {
+      food: 'banana'
+    }
+  },
+```
+
+2）HTML5 History模式
+3）导航守卫
+4）路由元信息
+5）过渡效果

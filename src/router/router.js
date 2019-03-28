@@ -13,14 +13,19 @@ export default [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    props: {
+      food: 'banana'
+    }
   },
   {
     path: '/argu/:name',
     name: 'argu',
-    components: {
-      default: () => import('@/components/argu.vue')
-    }
+    // components: {
+    //   default: () => import('@/components/argu.vue')
+    // },
+    component: () => import('@/components/argu.vue'),
+    props: true // 里边的参数会使用route.params的值
   },
   {
     path: '/named_view',
