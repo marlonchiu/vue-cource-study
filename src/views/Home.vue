@@ -36,12 +36,13 @@ export default {
   },
   // 在离开页面时调用
   beforeRouteLeave (to, from, next) {
-    const leave = confirm('确认离开吗？')
-    if(leave) {
-      next()
-    } else{
-      next(false)
-    }
+    // const leave = confirm('确认离开吗？')
+    // if(leave) {
+    //   next()
+    // } else{
+    //   next(false)
+    // }
+    next()
   },
   methods: {
     handleClick(type) {
