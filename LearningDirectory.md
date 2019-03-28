@@ -21,6 +21,7 @@
             {
                 path: '/about',
                 name: 'about',   // 路由命名
+                alias: '/about_page', // 别名
                 component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
             }
 
@@ -46,9 +47,58 @@
             <router-view/>
             <router-view name="email"/>
             <router-view name="tel"/>
+
+            /* 当然email tel组件也是可以作为单个组件小模块引入到child中的，更常规的用法*/
         ```
 
-3) JS 操作路由
+3) JS 操作路由（编程式导航）
+
+``` vue
+<template>
+  <div class="home">
+    <button @click="handleClick('back')">返回上一页</button>
+    <button @click="handleClick('push')">跳转页面</button>
+    <button @click="handleClick('replace')">替换页面</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'home',
+  methods: {
+    handleClick(type) {
+      if (type === 'back') {
+        this.$router.back()
+      } else if (type === 'push') {
+        const name = 'mudong'
+        this.$router.push({
+          // name: 'named_view',
+          // query: {
+          //   name: '123'
+          // }
+          
+          // name: 'argu',
+          // params: {
+          //   name: 'mudong'
+          // }
+          path: `/argu/${name}`
+        })
+      } else if (type === 'replace') {
+        this.$router.replace({
+          name: 'named_view'
+        })
+      }
+      // if (type === 'back') this.$router.back()
+      // else if (type === 'push') this.$router.push('/named_view')
+    }
+  },
+  components: {
+    HelloWorld
+  }
+}
+</script>
+```
+
 4）重定向和别名
 
 ```
@@ -61,6 +111,16 @@
         },
         redirect: to => {
             console.log(to)   // 在此重定向中做判断跳转
-        }
+        },
+
+        // redirect: to => {
+        //   // console.log(to)
+        //   // return {
+        //   //   name: 'home'
+        //   // }
+        //   return '/'
+        // },
+        // ES6简写
+        redirect: to => '/'
     }
 ```
