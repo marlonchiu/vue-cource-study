@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/image/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <p>{{food}}</p>
     <button @click="handleClick('back')">返回上一页</button>
     <button @click="handleClick('push')">跳转页面</button>
     <button @click="handleClick('replace')">替换页面</button>
@@ -13,6 +14,12 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
+  props: {
+    food: {
+      type: String,
+      default: 'apple'
+    }
+  },
   name: 'home',
   methods: {
     handleClick(type) {

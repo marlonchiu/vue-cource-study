@@ -1,10 +1,22 @@
 import Home from '../views/Home.vue'
 export default [
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login.vue')
+  },
+
+  {
     path: '/',
     name: 'home',
     alias: '/home_page', // 别名
-    component: Home
+    component: Home,
+    // props: route => {
+    //   return { }
+    // },
+    props: route => ({
+      food: route.query.food
+    })
   },
   {
     path: '/about',
@@ -17,15 +29,6 @@ export default [
     props: {
       food: 'banana'
     }
-  },
-  {
-    path: '/argu/:name',
-    name: 'argu',
-    // components: {
-    //   default: () => import('@/components/argu.vue')
-    // },
-    component: () => import('@/components/argu.vue'),
-    props: true // 里边的参数会使用route.params的值
   },
   {
     path: '/named_view',
@@ -51,5 +54,9 @@ export default [
     // }
     // ES6简写
     redirect: to => '/'
+  },
+  {
+    path: '*',
+    component: () => import('@/views/error_404.vue')
   }
 ]

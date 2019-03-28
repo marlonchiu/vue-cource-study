@@ -76,7 +76,7 @@ export default {
           // query: {
           //   name: '123'
           // }
-          
+
           // name: 'argu',
           // params: {
           //   name: 'mudong'
@@ -129,7 +129,8 @@ export default {
 
 1）路由组件传参
 ```
-  // 参数形式
+  // 布尔模式
+  * 适用于动态路由中有路由参数的情况
   * 要使用的组件在props中进行接收（一般先在props中先定义默认类型）
   {
     path: '/argu/:name',
@@ -149,9 +150,94 @@ export default {
       food: 'banana'
     }
   },
+
+  // 函数模式
+  * 适用于传入的属性能根据当前的路由做相应的处理逻辑，设置传入属性的属性值
+  * 要使用的组件在props中进行接收（一般先在props中先定义默认类型）
+  {
+    path: '/',
+    name: 'home',
+    alias: '/home_page', // 别名
+    component: Home,
+    // props: route => {
+    //   return {}
+    // },
+    props: route => ({
+      food: route.query.food
+    })
+  },
 ```
 
 2）HTML5 History模式
+
+```
+  // 路由配置
+  export default new Router({
+    mode: 'hash', // 默认值hash 使用#  另一个属性为 'hsitory'
+    routes: routes
+  })
+
+  // history 模式需要后端配置（项目部署要使用）
+  // 前端所有未匹配的页面都要指向404(放在最后  有个优先级)
+  {
+    path: '*',  // 匹配所有
+    component: () => import('@/views/error_404.vue')
+  }
+```
+
 3）导航守卫
+
+```
+应用场景说明
+  * 页面跳转访问，判断用户是否登录
+  * 权限控制，要先判断用户是否有访问的权限
+
+分类：全局守卫 和 独享守卫
+  
+  * 全局守卫  ../router/index.js
+
+  const router = new Router({
+    mode: 'hash', // 默认值hash
+    routes: routes
+  })
+
+  // 注册路由全局前置守卫
+  const HAS_LOGINED = true
+  // 页面跳转之前的判断
+  router.beforeEach((to, from, next) => {
+    if (to.name !== 'login') { // 如果当前不是登录页面
+      if (HAS_LOGINED) {
+        next()
+      } else {
+        next({ name: 'login' })
+      }
+    } else { // 如果是在登录页
+      if (HAS_LOGINED) {
+        next({ name: 'home' })
+      } else {
+        next()
+      }
+    }
+  })
+
+  // 全局守卫 导航被确认之前（表示所有的导航钩子结束），然后在所有组件内守卫和异步路由被解析之后被调用
+  // 导航被确认之前  --- 表示所有的导航钩子结束
+  router.beforeResolve((to, from, next) => {
+    // 同beforeEach
+  })
+
+  // 页面跳转后的钩子
+  router.afterEach((form, to) => {
+    // console.log(123)
+    // 比如更改登录的状态
+    // logining = false
+  })
+
+  export default router
+
+
+  * 独享守卫
+```
+
 4）路由元信息
 5）过渡效果
