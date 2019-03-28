@@ -44,6 +44,10 @@ export default [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     props: {
       food: 'banana'
+    },
+    // 配置路由元信息
+    meta: {
+      title: '关于'
     }
   },
   {

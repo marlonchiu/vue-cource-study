@@ -312,4 +312,95 @@ export default {
   ```
 
 4）路由元信息
+
+```
+// 在单个路由中配置 meta
+场景  页面标题
+
+{
+  path: '/about',
+  name: 'about',
+  alias: '/about_page', // 别名
+  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+  props: {
+    food: 'banana'
+  },
+
+  // 配置路由元信息
+  meta: {
+    title: '关于'
+  }
+},
+
+../@/lib/utils.js
+export const setTitle = (title) => {
+  window.document.title = title || 'admin'
+}
+
+// 在index.js 中的
+
+import { setTitle } from '@/lib/util'
+// 注册路由全局前置守卫
+router.beforeEach((to, from, next) => {
+  to.meta && setTitle(to.meta.title)
+})
+```
+
 5）过渡效果
+
+```
+两种实现方式：
+    1.对要增加动态的特效的页面  直接设置
+    2.判断监听路由，只有满足某个判定条件时才设置
+
+    // app.vue页面
+    <!-- 增加页面跳转过渡效果 --> 
+    <!-- 单个transition 给多个页面设置用transition-group-->
+    <!-- 可以绑定值 -->
+    <!-- <transition-group name='router'> -->  
+    <transition-group :name='routerTransition'>
+      <router-view key='default'/>
+      <router-view key='email' name="email"/>
+      <router-view key='name' name="tel"/>
+    </transition-group>
+
+    <script>
+      export default {
+        data() {
+          return {
+            routerTransition: ''
+          }
+        },
+        watch: {
+          '$route'(to) {
+            to.query && to.query.transitionName && (this.routerTransition = to.query.transitionName)
+          }
+        }
+      }
+    </script>
+
+
+  <style lang="less">
+    // 页面进入的效果
+    .router-enter {
+      opacity: 0;
+    }
+    .router-enter-active {
+      transition: opacity 1s ease;
+    }
+    .router-enter-to {
+      opacity: 1;
+    }
+    // 页面离开的效果
+    .router-leave {
+      opacity: 1;
+    }
+    .router-leave-active {
+      transition: opacity 1s ease;
+    }
+    .router-leave-to {
+      opacity: 0;
+    }
+  </style>
+
+```

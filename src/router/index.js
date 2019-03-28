@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './router'
+import { setTitle } from '@/lib/util'
 
 Vue.use(Router)
 
@@ -13,6 +14,8 @@ const router = new Router({
 const HAS_LOGINED = true
 // 页面跳转之前的判断
 router.beforeEach((to, from, next) => {
+  to.meta && to.meta.title && setTitle(to.meta.title)
+
   if (to.name !== 'login') { // 如果当前不是登录页面
     if (HAS_LOGINED) {
       next()
