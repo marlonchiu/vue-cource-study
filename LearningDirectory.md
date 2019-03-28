@@ -186,7 +186,7 @@ export default {
 ```
 
 3）导航守卫
-
+  
 ```
 应用场景说明
   * 页面跳转访问，判断用户是否登录
@@ -237,7 +237,79 @@ export default {
 
 
   * 独享守卫
+
+  第一种：是在路由中配置
+  {
+    path: '/',
+    name: 'home',
+    alias: '/home_page', // 别名
+    component: Home,
+    props: route => ({
+      food: route.query.food
+    }),
+    beforeEnter: (to, from, next) => {
+      if (from.name === 'about') {
+        alert('我是从about页面来的')
+      } else {
+        alert('我不是从about页面来的')
+      }
+      next() // 所有逻辑执行完必须要next()
+    }
+  },
+
+  * 第二种在组件内使用
+  // 在进入页面时调用 在执行完之前页面是未被渲染的
+  beforeRouteEnter (to, from, next) {
+    console.log(to.name)
+    // 此时页面还没有渲染  没有this实例
+    if (from.name === 'about') {
+      alert('我是从about页面来的')
+    } else {
+      alert('我不是从about页面来的')
+    }
+    // next() // 所有逻辑执行完必须要next()
+    next(vm => {
+      console.log(vm)  // 如果要获取组件的实例  此种用法
+    })
+  },
+
+  // 在离开页面时调用
+  beforeRouteLeave (to, from, next) {
+    // 此阶段 this组件对象是可以使用的
+    const leave = confirm('确认离开吗？')
+    if(leave) {
+      next()
+    } else{
+      next(false)
+    }
+  },
+
+  // 组件路由发生变化 组件页面复用是调用
+  beforeRouteUpdate (to, from, next) {
+    // 此时this是存在的  是可以使用的
+    console.log(to.name)
+    // next()
+  }
 ```
+
+  路由完整的解析流程
+  ```
+    /**
+      * 路由导航解析完整的操作流程
+      *  1.导航被触发
+      *  2.在失活的组件（即将离开的页面组件）里调用离开守卫 beforeRouteLeave
+      *  3.调用全局的前置守卫 beforeEach
+      *  4.再重用的组件调用 beforeRouteUpdate
+      *  5.调用路由独享的守卫 beforeEnter (如果不是重用的组件的话调用)
+      *  6.解析异步路由组件
+      *  7.在被激活的组件（即将进入的页面组件）中调用 beforeRouteEnter
+      *  8.调用全局的解析守卫 beforeResolve
+      *  9.导航被确认
+      * 10.调用全局的后置守卫 afterEach
+      * 11.触发页面DOM更新
+      * 12.用创建好的实例调用beforeRouteEnter守卫里传给next的回调函数
+      *  */
+  ```
 
 4）路由元信息
 5）过渡效果

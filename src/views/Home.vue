@@ -12,6 +12,7 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import { constants } from 'fs';
 
 export default {
   props: {
@@ -21,6 +22,27 @@ export default {
     }
   },
   name: 'home',
+  beforeRouteEnter (to, from, next) {
+    // console.log(to.name)
+    // 此时页面还没有渲染  没有this实例
+    // if (from.name === 'about') {
+    //   alert('我是从about页面来的')
+    // } else {
+    //   alert('我不是从about页面来的')
+    // }
+    next(vm => {
+      console.log(vm)
+    })
+  },
+  // 在离开页面时调用
+  beforeRouteLeave (to, from, next) {
+    const leave = confirm('确认离开吗？')
+    if(leave) {
+      next()
+    } else{
+      next(false)
+    }
+  },
   methods: {
     handleClick(type) {
       if (type === 'back') {

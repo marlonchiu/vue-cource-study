@@ -32,6 +32,7 @@ router.beforeEach((to, from, next) => {
 // 导航被确认之前  --- 表示所有的导航钩子结束
 router.beforeResolve((to, from, next) => {
   // 同beforeEach
+  next()
 })
 
 // 页面跳转后的钩子
@@ -40,5 +41,21 @@ router.afterEach((form, to) => {
   // 比如更改登录的状态
   // logining = false
 })
+
+/**
+ * 路由导航解析完整的操作流程
+ *  1.导航被触发
+ *  2.在失活的组件（即将离开的页面组件）里调用离开守卫 beforeRouteLeave
+ *  3.调用全局的前置守卫 beforeEach
+ *  4.再重用的组件调用 beforeRouteUpdate
+ *  5.调用路由独享的守卫 beforeEnter (如果不是重用的组件的话调用)
+ *  6.解析异步路由组件
+ *  7.在被激活的组件（即将进入的页面组件）中调用 beforeRouteEnter
+ *  8.调用全局的解析守卫 beforeResolve
+ *  9.导航被确认
+ * 10.调用全局的后置守卫 afterEach
+ * 11.触发页面DOM更新
+ * 12.用创建好的实例调用beforeRouteEnter守卫里传给next的回调函数
+ *  */
 
 export default router

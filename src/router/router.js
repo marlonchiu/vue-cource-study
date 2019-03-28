@@ -1,11 +1,19 @@
 import Home from '../views/Home.vue'
 export default [
+  // {
+  //   path: '/',
+  //   redirect: '/login'
+  // },
   {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login.vue')
   },
-
+  {
+    path: '/argu/:name',
+    name: 'argu',
+    component: () => import('@/components/argu.vue')
+  },
   {
     path: '/',
     name: 'home',
@@ -16,7 +24,15 @@ export default [
     // },
     props: route => ({
       food: route.query.food
-    })
+    }),
+    beforeEnter: (to, from, next) => {
+      // if (from.name === 'about') {
+      //   alert('我是从about页面来的')
+      // } else {
+      //   alert('我不是从about页面来的')
+      // }
+      next() // 所有逻辑执行完必须要next()
+    }
   },
   {
     path: '/about',
