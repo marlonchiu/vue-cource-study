@@ -13,10 +13,9 @@ export default {
   },
   mounted() {
     // 事件监听
-    this.$bus.$on('on-click', (message)=> {
-      this.message = message 
+    this.$bus.$on('on-click', (message) => {
+      this.message = message
     })
   }
 }
 </script>
-

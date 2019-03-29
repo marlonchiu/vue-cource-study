@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/image/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <img alt="Vue logo" src="../assets/image/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <p>{{food}}</p>
     <button @click="handleClick('back')">返回上一页</button>
     <button @click="handleClick('push')">跳转页面</button>
