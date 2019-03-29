@@ -104,4 +104,201 @@
 ```
 
 3) Vuex --基础--mutation&action/module
+
+```
+const mutations = {
+  // SET_APP_NAME (state, params) {
+  //   state.appName = params
+  // }
+
+  // SET_APP_NAME (state, params) {
+  //   state.appName = params.appName
+  // }
+
+  SET_APP_NAME (state, params) {
+    state.appName = params.appName
+  },
+  // 新添加的属性（最上边要引入 import Vue from 'vue'）
+  SET_APP_VERSION (state) { // 给state中添加属性和值
+    Vue.set(state, 'appVersion', 'v2.0') // 三个参数依次 给谁添加属性  属性名 属性值
+  }
+}
+export default mutations
+
+对应页面（提交数据方法）
+methods: {
+    handleChangeAppName() {
+      // this.$store.commit('SET_APP_NAME', 'newAppName')
+
+      // this.$store.commit('SET_APP_NAME', {
+      //   appName: 'newAppName'
+      // })
+
+      this.$store.commit({
+        type: 'SET_APP_NAME',
+        appName: 'newAppName'
+      })
+
+      // 增加版本号的属性的方法 mutations
+      this.$store.commit('SET_APP_VERSION')
+    }
+  },
+
+    // 正规用法
+    import { mapMutations } from 'vuex'
+    methods: {
+      ...mapMutations([
+        'SET_APP_NAME'
+      ]),
+      // 在模块中的用法（对于开启命名空间的模块）
+      ...mapMutations('user',[
+        'SET_USER_NAME'
+      ]),
+
+      handleChangeAppName() {
+        this.SET_APP_NAME('newAppName')
+      },
+      handleChangeUserName() {
+        this.SET_USER_NAME('ZHAOJIANDONG')
+      },
+    }, 
+
+
+    ***
+        加强说明： 对于vuex来说 mapGetters mapMutations 的模块中的方法都会被解析到外部全局，
+            所以使用的时候是完全不需要写模块名也是可以获取值和调用方法的
+            （前提：未开启命名空间，不能写 namespaced: true, // 使用模块命名空间 此时不会受其他外界模块的干扰）
+        对于命名空间的用法  都可以采用的是
+            // 使用模块命名空间  -- 开始
+            import {createNamespacedHelpers} from 'vuex'
+            const {mapState, mapGetters, mapMutations} = createNamespacedHelpers('user')
+            // 使用模块命名空间  -- 结束
+
+```
+
+* actions 异步请求的操作
+```
+...store/actions.js
+// 模拟下异步请求
+import { getAppName } from '@/api/app.js'
+
+const actions = {
+  updateAppName ({ commit }) {
+    getAppName().then((res) => {
+      console.log(res)
+      if (res.code === 200) {
+        // const newAppName = res.info.appName
+        // // 提交mutation 请求
+        // commit('SET_APP_NAME', newAppName)
+        const { info: { appName } } = res
+        // 提交mutation 请求
+        commit('SET_APP_NAME', appName)
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  // 或者如下 ES8 好酷好酷的
+  async updateAppName ({ commit }) {
+    // 处理异常情况下  包在try...catch... 语句中
+    try {
+      // es6 解构赋值解析
+      const { info: { appName } } = await getAppName()
+      commit('SET_APP_NAME', appName)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export default actions
+
+... api/app.js
+// 模拟异步接口
+export const getAppName = () => {
+  return new Promise((resolve, reject) => {
+    const err = null
+    setTimeout(() => {
+      if (!err) {
+        resolve({
+          code: 200,
+          info: { appName: 'SOMOOC' }
+        })
+      } else {
+        reject(err)
+      }
+    }, 2000)
+  })
+}
+
+... 页面操作
+export default {
+  name: 'store',
+  data () {
+    return {
+      inputValue: ''
+    }
+  },
+  methods: {
+    ...mapActions([
+      'updateAppName' // actions中定义的方法名称
+    ]),
+    asyncChangeAppName () {
+      this.updateAppName()
+      // 或者
+      this.$store.dispatch('updateAppName')
+    }
+  },
+```
+
+* 模块中的用法
+```
+模块中套模块的用法
+...mapState('user/next', [  // next 表示user module中的下一级模块名（属性配置跟最外层的store一样）
+    'userName'
+]),
+
+
+// 动态注册模块
+// 页面组件触发方法
+methods: {
+    registerModule () {
+      // store 有一个注册模块的方法registerModule  
+      //    第一个属性 要注册模块的名称
+      //    第二个属性 是个对象  要注册的模块属性
+
+      //  给store注册模块
+      // this.$store.registerModule('todo', {
+      //   state: {
+      //     todoList: [
+      //       '吃饭',
+      //       '睡觉',
+      //       '打豆豆'
+      //     ]
+      //   }
+      // })
+
+      // 给user模块添加模块（给模块注册模块）
+      this.$store.registerModule(['user', 'todo'], {
+        state: {
+          todoList2: [
+            '吃饭',
+            '睡觉',
+            '打豆豆'
+          ]
+        }
+      })
+    }
+},
+computed: {
+    ...mapState({
+        // 新注册的模块在执行方法之前是不存在的  要先判断有没有再赋值
+      // todoList: state => state.todo && state.todo.todoList // state.模块名.属性值
+      todoList2: state => state.user.todo ? state.user.todo.todoList : []
+    }),
+}
+```
+
+
 4) Vuex --进阶
