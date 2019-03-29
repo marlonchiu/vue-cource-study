@@ -72,9 +72,11 @@ export default {
       this.$store.commit('SET_APP_VERSION')
     },
     registerModule () {
-      // store 有一个注册模块的方法registerModule  
+      // store 有一个注册模块的方法 registerModule
       //    第一个属性 要注册模块的名称
       //    第二个属性 是个对象  要注册的模块属性
+
+      // 给store注册模块
       // this.$store.registerModule('todo', {
       //   state: {
       //     todoList: [

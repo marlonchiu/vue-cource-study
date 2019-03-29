@@ -264,7 +264,7 @@ export default {
 // 页面组件触发方法
 methods: {
     registerModule () {
-      // store 有一个注册模块的方法registerModule  
+      // store 有一个注册模块的方法 registerModule  
       //    第一个属性 要注册模块的名称
       //    第二个属性 是个对象  要注册的模块属性
 
