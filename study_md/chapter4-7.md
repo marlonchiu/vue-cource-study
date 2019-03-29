@@ -97,6 +97,10 @@
       'firstLetter'
     ]),
     
+    特殊：如果模块不开启命名空间，也是可以通过mapGetters获得相应的值的
+
+// 如果模块不开启命名空间的话，直接也可以取得相应的属性值
+    
 ```
 
 3) Vuex --基础--mutation&action/module
