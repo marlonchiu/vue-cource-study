@@ -1,9 +1,11 @@
 <template>
   <div>
-    <a-input v-model="inputValue"></a-input>
+    <!-- <a-input :value="stateValue"  @input="handlechangeStateInput"></a-input> -->
+    <a-input v-model="stateValue"></a-input>
+    <!-- <a-input v-model="inputValue"></a-input> -->
     <!-- 两者等价的 -->
     <!-- <a-input :value="inputValue" @input="handleInput"></a-input> -->
-    <p>{{ inputValue }} --> lastLetter is {{inputValueLastLetter}}</p>
+    <p>{{ stateValue }} --> lastLetter is {{inputValueLastLetter}}</p>
     <a-show :content="inputValue"></a-show>
     <h2>appName: {{ appName }}</h2>
     <h2>版本号是 {{appWithVersion}}</h2>
@@ -41,7 +43,8 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'SET_APP_NAME'
+      'SET_APP_NAME',
+      'SET_STATE_VALUE'
     ]),
     ...mapActions([
       'updateAppName'
@@ -58,6 +61,8 @@ export default {
     },
     handleChangeUserName () {
       this.SET_USER_NAME('ZHAOJIANDONG')
+      // 不严格模式 如下赋值也是可以修改的
+      // this.$store.state.user.userName = "Tim" // 错误的提交方法
     },
     handleChangeAppName () {
       // this.$store.commit('SET_APP_NAME', 'newAppName')
@@ -96,6 +101,9 @@ export default {
           ]
         }
       })
+    },
+    handlechangeStateInput (val) {
+      this.SET_STATE_VALUE(val)
     }
   },
   // vuex中的数据处理引入
@@ -111,8 +119,17 @@ export default {
     // },
     ...mapState([
       'appName',
-      'appVersion'
+      'appVersion',
+      'stateValue'
     ]),
+    stateValue: {
+      get () {
+        return this.$store.state.stateValue
+      },
+      set (val) {
+        this.SET_STATE_VALUE(val)
+      }
+    },
     ...mapGetters([
       'appWithVersion'
     ]),

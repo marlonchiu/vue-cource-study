@@ -301,4 +301,87 @@ computed: {
 ```
 
 
-4) Vuex --进阶
+## Vuex --进阶
+1）插件
+```
+// 场景：我们每次刷新页面时，store的数据是会被重新初始化的，就会导致整个页面的效果不友好
+
+.../plugin/saveInLocal.js'
+/*
+* 定义一个数据持久化存储的插件（页面刷新所有的vuex之都会变化）
+*/
+export default store => {
+  console.log('store初始化了') // 只会执行一次
+  if (localStorage.state) store.replaceState(JSON.parse(localStorage.state))
+  store.subscribe((mutations, state) => {
+    // console.log('提交mutations')
+    localStorage.state = JSON.stringify(state)
+  })
+}
+
+/*
+*上述方法的执行逻辑
+* 第一次先判断本地是否存储的有state  有的话就赋值
+* 在每次更新提交mutations  更新本地存储
+* 这样的话每次刷新页面时，数据是不变的
+*/
+
+...store/index.js
+// 引入
+import saveInLocal from './plugin/saveInLocal'
+// 在store对象中注入插件
+plugins: [saveInLocal]
+```
+
+2）严格模式
+```
+// 在store对象中
+strict: true, // 严格模式  默认值为false
+可以通过判断生产环境来决定是否触发严格模式  
+strict: process.env.NODE_ENV === 'development', // 开发模式为false 生产环境为true
+```
+
+3）vuex + 双向绑定
+```
+// 如果组件中绑定的是state中的值，是不可以直接修改state的值的
+   方法一：直接走mutations提交数据的形式
+    <a-input :value="stateValue"  @input="handlechangeStateInput"></a-input>
+
+   computed: {
+     ...mapState([
+       'stateValue'
+     ])
+   },
+   methods: {
+     ...mapMutations([
+       'SET_STATE_VALUE'
+     ]),
+     handlechangeStateInput (val) {
+       this.SET_STATE_VALUE(val)
+     }
+   }
+
+
+   方法二：双向数据绑定
+   // 组件页面
+   <a-input v-model="stateValue"></a-input>
+
+   methods: {
+    ...mapMutations([
+      'SET_STATE_VALUE'
+    ])
+   }
+   computed: {
+    ...mapState([
+      'stateValue'
+    ]),
+    stateValue: {
+      get () {
+        return this.$store.state.stateValue
+      },
+      set (val) {
+        this.SET_STATE_VALUE(val)  // 当然提交方法也是要定义的
+      }
+    },
+   }
+```
