@@ -6,13 +6,14 @@
     <button @click="handleClick('back')">返回上一页</button>
     <button @click="handleClick('push')">跳转页面</button>
     <button @click="handleClick('replace')">替换页面</button>
+    <button @click="handleRequestUserInfo">请求数据</button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import { constants } from 'fs';
+// import HelloWorld from '@/components/HelloWorld.vue'
+import { getUserInfo } from '@/api/user'
 
 export default {
   props: {
@@ -45,7 +46,7 @@ export default {
     next()
   },
   methods: {
-    handleClick(type) {
+    handleClick (type) {
       if (type === 'back') {
         this.$router.back()
       } else if (type === 'push') {
@@ -68,10 +69,15 @@ export default {
       }
       // if (type === 'back') this.$router.back()
       // else if (type === 'push') this.$router.push('/named_view')
+    },
+    handleRequestUserInfo () {
+      getUserInfo({ userId: 21 }).then(res => {
+        console.log('res: ', res)
+      })
     }
   },
   components: {
-    HelloWorld
+    // HelloWorld
   }
 }
 </script>
