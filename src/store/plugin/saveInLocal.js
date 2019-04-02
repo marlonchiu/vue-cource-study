@@ -2,7 +2,7 @@
 * 定义一个数据持久化存储的插件（页面刷新所有的vuex之都会变化）
 */
 export default store => {
-  console.log('store初始化了') // 只会执行一次
+  // console.log('store初始化了') // 只会执行一次
   if (localStorage.state) store.replaceState(JSON.parse(localStorage.state))
   store.subscribe((mutations, state) => {
     // console.log('提交mutations')

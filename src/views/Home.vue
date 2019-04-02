@@ -7,6 +7,9 @@
     <button @click="handleClick('push')">跳转页面</button>
     <button @click="handleClick('replace')">替换页面</button>
     <button @click="handleRequestUserInfo">请求数据</button>
+    <hr>
+    <img :src="imgUrl" alt="">
+    <h1 :style="{ background: color }">测试随机颜色</h1>
   </div>
 </template>
 
@@ -23,6 +26,12 @@ export default {
     }
   },
   name: 'home',
+  data () {
+    return {
+      imgUrl: '',
+      color: ''
+    }
+  },
   beforeRouteEnter (to, from, next) {
     // console.log(to.name)
     // 此时页面还没有渲染  没有this实例
@@ -32,7 +41,7 @@ export default {
     //   alert('我不是从about页面来的')
     // }
     next(vm => {
-      console.log(vm)
+      // console.log(vm)
     })
   },
   // 在离开页面时调用
@@ -72,7 +81,10 @@ export default {
     },
     handleRequestUserInfo () {
       getUserInfo({ userId: 21 }).then(res => {
-        console.log('res: ', res)
+        // console.log('res: ', res)
+        console.log('res: ', res.data)
+        this.imgUrl = res.data.img
+        this.color = res.data.color
       })
     }
   },

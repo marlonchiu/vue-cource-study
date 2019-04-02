@@ -35,7 +35,7 @@ class HttpRequest {
     })
     // 响应的拦截器
     instance.interceptors.response.use(res => {
-      console.log(res)
+      // console.log(res)
       // 请求执行删除当前的url
       delete this.queue[url]
       // return res
