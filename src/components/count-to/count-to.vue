@@ -1,6 +1,8 @@
 <template>
   <div>
-    <span :id="eleId"></span>
+    <slot name="left"></slot>
+    <span :id="eleId" :class="countClass" ref="number"></span>
+    <slot name="right"></slot>
   </div>
 </template>
 <script>
@@ -9,11 +11,21 @@
 
 // 最新的countup.js 用法  引入 import CountUp from 'countup' 版本2.0.4
 import { CountUp } from 'countup.js'
+
+// 样式引入方法一
+// import './count-to.less'
+
 export default {
   name: 'countTo',
   computed: {
     eleId () {
       return `count_up_${this._uid}` // 每个组件会有一个唯一的uid值作区分
+    },
+    countClass () {
+      return [
+        'count-to-number',
+        this.className
+      ]
     }
   },
   props: {
@@ -86,6 +98,27 @@ export default {
     decimals: {
       type: Number,
       default: 0
+    },
+    /**
+     * @description 字首(数字的前缀,根据需要可设为 $,¥,￥ 等)
+     */
+    prefix: {
+      type: String,
+      default: ''
+    },
+    /**
+     * @description 后缀(数字的后缀 ,根据需要可设为 元,个,美元 等)
+     */
+    suffix: {
+      type: String,
+      default: ''
+    },
+    /**
+     * @description 自定义组件的类名
+     */
+    className: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -102,7 +135,9 @@ export default {
         useGrouping: this.useGrouping,
         separator: this.separator,
         decimal: this.decimal,
-        decimalPlaces: this.decimalPlaces
+        decimalPlaces: this.decimalPlaces,
+        prefix: this.prefix,
+        suffix: this.suffix
       }
       // 旧的countup 用法  引入 import CountUp from 'countup'
       /**
@@ -126,8 +161,34 @@ export default {
       this.conuter = new CountUp(this.eleId, this.endVal, options)
       setTimeout(() => {
         this.conuter.start()
+        // 动画执行完事件
+        this.emitEndEvent()
       }, this.delay)
     })
+  },
+  methods: {
+    getCount () {
+      // console.log(this.$refs.number.innerText)
+      return this.$refs.number.innerText
+    },
+    emitEndEvent () {
+      setTimeout(() => {
+        this.$nextTick(() => {
+          this.$emit('on-animation-end', Number(this.getCount()))
+        })
+      }, this.duration * 1000 + 5) // 动画执行有延迟 否则数据不一致
+    }
+  },
+  watch: {
+    endVal (newVal, oldVal) {
+      this.conuter.update(newVal)
+      // 动画执行完事件
+      this.emitEndEvent()
+    }
   }
 }
 </script>
+<style lang="less">
+  // 样式引入方法二
+  @import './count-to.less';
+</style>

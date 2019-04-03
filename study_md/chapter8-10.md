@@ -245,6 +245,18 @@ if (process.env.NODE_ENV !== 'production') require('./mock')
 
 ```html
 // countupjs，一个有趣的数字翻滚动画
+
+// 组件中插槽的使用 多个插槽用插槽名字
+    // 定义组件
+        <slot name="left"></slot>
+        <span :id="eleId" :class="countClass" ref="number"></span>
+        <slot name="right"></slot>
+
+    // 使用的地方
+        <count-to ref="countTo" :end-val="endVal">
+            <span slot="left">总金额：</span>
+            <span slot="right">元</span>
+        </count-to>
 ```
 
 2）组件中使用id值

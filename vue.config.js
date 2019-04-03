@@ -3,7 +3,7 @@ const path = require('path')
 const resolve = dir => path.join(__dirname, dir)
 
 // 项目的部署路径  前边表示项目启动时候的根路径地址
-const BASE_URL = process.env.NODE_ENV === 'procution' ? '/' : '/'
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/' : '/'
 
 module.exports = {
   lintOnSave: true,
