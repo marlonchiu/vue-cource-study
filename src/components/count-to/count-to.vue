@@ -107,13 +107,13 @@ export default {
       // 旧的countup 用法  引入 import CountUp from 'countup'
       /**
        * @description配置说明
-       *   参数一: 数字所在容器
-       *   参数二: 数字开始增长前的默认值(起始值),一般从 0 开始增长
-       *   参数三: 数字增长后的最终值,该值一般通过异步请求获取
-       *   参数四: 数字小数点后保留的位数
-       *   参数五: 数字增长特效的时间,默认为2秒
-       *   参数六: 其他配置项
-       *          注: 参数六也可不加,其配置项则为默认值
+       *   target    参数一: 数字所在容器
+       *   startVal  参数二: 数字开始增长前的默认值(起始值),一般从 0 开始增长
+       *   endVal    参数三: 数字增长后的最终值,该值一般通过异步请求获取
+       *   decimals  参数四: 数字小数点后保留的位数
+       *   duration  参数五: 数字增长特效的时间,默认为2秒
+       *   options?  参数六: 其他配置项
+       *             注: 参数六也可不加,其配置项则为默认值
        */
 
       // this.conuter = new CountUp(this.eleId, this.startVal, this.endVal, this.decimals, this.duration, {
