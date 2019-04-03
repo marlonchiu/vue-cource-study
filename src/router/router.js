@@ -10,6 +10,11 @@ export default [
     component: () => import('@/views/login.vue')
   },
   {
+    path: '/count-to',
+    name: 'count_to',
+    component: () => import('@/views/count-to.vue')
+  },
+  {
     path: '/argu/:name',
     name: 'argu',
     component: () => import('@/components/argu.vue')

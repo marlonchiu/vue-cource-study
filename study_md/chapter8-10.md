@@ -242,5 +242,10 @@ if (process.env.NODE_ENV !== 'production') require('./mock')
 ### 从数字渐变组件谈第三方JS库的使用
 
 1）组件封装基础
+
+```html
+// countupjs，一个有趣的数字翻滚动画
+```
+
 2）组件中使用id值
 3）组件中获取DOM

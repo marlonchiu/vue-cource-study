@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "countup": "^1.8.2",
+    "countup.js": "^2.0.4",
     "mock": "^0.1.1",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
