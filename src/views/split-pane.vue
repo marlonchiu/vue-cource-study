@@ -1,5 +1,5 @@
 <template>
-  <div class="split-pane">
+  <div class="split-pane-con">
     <split-pane></split-pane>
   </div>
 </template>
@@ -12,3 +12,10 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.split-pane-con {
+  width: 400px;
+  height: 200px;
+  background: papayawhip;
+}
+</style>
