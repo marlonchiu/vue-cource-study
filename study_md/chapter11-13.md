@@ -221,6 +221,7 @@ cursor: col-resize;
 // import App from './App.vue'
 import countTo from '_c/count-to'
 
+
 new Vue({
   router,
   store,
@@ -273,7 +274,14 @@ new Vue({
       key: '',
       ref: ''
     })
-  }
+  },
+
+  // 第二个属性如果不需要可以不写  第三个为字符串或者数组
+  // render: h => h('div', '123')
+  render: h => h('div', [
+    h('span', '111'),
+    h('span', '222')
+  ])
 }).$mount('#app')
 
 ```
