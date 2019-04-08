@@ -10,6 +10,21 @@ if (process.env.NODE_ENV !== 'production') require('./mock')
 Vue.config.productionTip = false
 Vue.prototype.$bus = Bus
 
+const handleClick = event => {
+  console.log(event)
+  event.stopPropagation()
+}
+let itemList = [{ name: 'lison' }, { name: 'marlon' }]
+const getLiEleArr = (h) => {
+  return itemList.map((item, index) => h('li', {
+    'class': `list_item_${index}`,
+    on: {
+      'click': handleClick
+    },
+    key: `list_item_${index}`
+  }, item.name))
+}
+
 new Vue({
   router,
   store,
@@ -65,8 +80,15 @@ new Vue({
   // }
   // 第二个属性如果不需要可以不写  第三个为字符串或者数组
   // render: h => h('div', '123')
+  // render: h => h('div', [
+  //   h('span', '111'),
+  //   h('span', '222')
+  // ])
   render: h => h('div', [
-    h('span', '111'),
-    h('span', '222')
+    h('ul', {
+      on: {
+        'click': handleClick
+      }
+    }, getLiEleArr(h))
   ])
 }).$mount('#app')
