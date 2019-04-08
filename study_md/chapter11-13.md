@@ -210,3 +210,10 @@ cursor: col-resize;
     // 绑定更新三的方法 .sync
     this.$emit('update:value', offsetPercent)   // update后边冒号跟sync的值
 ```
+
+## 渲染函数和JSX快速掌握
+
+1）render函数
+2）函数式组件
+3）JSX语法
+4）作用域插槽
