@@ -7,7 +7,7 @@
       </li>
     </ul> -->
     <ul>
-      <li v-for="(item, index) in list2" :key="`list_item_${index}`">
+      <li @mousemove.prevent="handleMove" v-for="(item, index) in list2" :key="`list_item_${index}`">
         <span v-if="!render">{{item.number}}</span>
         <render-dom v-else :render-func="render" :number="item.number"></render-dom>
       </li>
@@ -36,6 +36,13 @@ export default {
     render: {
       type: Function,
       default: () => {}
+    }
+  },
+  methods: {
+    handleMove (event) {
+      console.log(event)
+      // 阻止事件的默认行为
+      event.preventDefault()
     }
   },
   components: {

@@ -403,6 +403,8 @@ renderFunc (h, number) {
 handleEnd () {
   console.log('end!')
 }
+
+// 使用render渲染的组件方法  vue的一些指令语法是不可以使用的
 ```
 
 4）作用域插槽
