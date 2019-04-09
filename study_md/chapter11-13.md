@@ -284,6 +284,30 @@ new Vue({
   ])
 }).$mount('#app')
 
+
+// 渲染列表
+const handleClick = event => {
+  console.log(event)
+  event.stopPropagation()
+}
+let itemList = [{ name: 'lison' }, { name: 'marlon' }]
+const getLiEleArr = (h) => {
+  return itemList.map((item, index) => h('li', {
+    'class': `list_item_${index}`,
+    on: {
+      'click': handleClick
+    },
+    key: `list_item_${index}`
+  }, item.name))
+}
+
+render: h => h('div', [
+  h('ul', {
+    on: {
+      'click': handleClick
+    }
+  }, getLiEleArr(h))
+])
 ```
 
 2）函数式组件
