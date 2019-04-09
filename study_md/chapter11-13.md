@@ -389,6 +389,20 @@ methods: {
     )
   }
 },
+
+
+// 渲染组件的用法
+import CountTo from '_c/count-to'
+
+// nativeOn-开头 原生事件  on-开头表示组件自身的事件
+renderFunc (h, number) {
+  return (
+    <CountTo endVal={number} nativeOn-click={this.handleClick} on-on-animation-end={this.handleEnd}></CountTo>
+  )
+},
+handleEnd () {
+  console.log('end!')
+}
 ```
 
 4）作用域插槽
