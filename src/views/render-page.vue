@@ -8,6 +8,7 @@
 </template>
 <script>
 import List from '_c/list'
+import { isIP } from 'net';
 export default {
   name: 'render_page',
   data () {
@@ -23,11 +24,16 @@ export default {
       console.log(event)
     },
     renderFunc (h, name) {
-      return h('i', {
-        style: {
-          color: 'pink'
-        }
-      }, name)
+      // 函数式组件用法
+      // return h('i', {
+      //   style: {
+      //     color: 'pink'
+      //   }
+      // }, name)
+      // JSX语法
+      return (
+        <i on-click={this.handleClick} style={{color: 'red'}}>{name}</i>
+      )
     }
   },
   components: {

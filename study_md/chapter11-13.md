@@ -354,6 +354,7 @@ data () {
   },
   methods: {
     renderFunc (h, name) {
+      // 函数式组件用法
       return h('i', {
         style: {
           color: 'pink'
@@ -367,4 +368,27 @@ data () {
 ```
 
 3）JSX语法
+
+```javascript
+// render-page.vue
+methods: {
+  handleClick (event) {
+    console.log(event)
+  },
+  renderFunc (h, name) {
+    // 函数式组件用法
+    // return h('i', {
+    //   style: {
+    //     color: 'pink'
+    //   }
+    // }, name)
+
+    // JSX语法
+    return (
+      <i on-click={this.handleClick} style={{color: 'red'}}>{name}</i>
+    )
+  }
+},
+```
+
 4）作用域插槽
