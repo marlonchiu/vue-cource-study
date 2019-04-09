@@ -24,8 +24,8 @@ export default {
         { name: 'marlon' }
       ],
       itemList2: [
-        {number: 100},
-        {number: 300}
+        { number: 100 },
+        { number: 300 }
       ]
     }
   },

@@ -429,3 +429,8 @@ handleEnd () {
 // 可以配合具名插槽使用
 // 扩展  vue文档渲染函数的内容  https://cn.vuejs.org/v2/guide/render-function.html
 ```
+
+## 递归组件的使用
+
+1）封装简单的Menu组件
+2）递归组件
