@@ -408,3 +408,24 @@ handleEnd () {
 ```
 
 4）作用域插槽
+
+```
+// list.vue
+<ul>
+  <li v-for="(item, index) in list2" :key="`list_item_${index}`">
+    <!-- 作用域插槽 -->
+    <slot :number="item.number"></slot>
+  </li>
+</ul>
+
+// render-page.vue 
+// countTo作为组件引入
+<!-- 作用域插槽 -->
+// count属性会包括传入的数据
+<list :list2="itemList2"> 
+  <count-to slot-scope="count" :end-val="count.number"></count-to>
+</list>
+
+// 可以配合具名插槽使用
+// 扩展  vue文档渲染函数的内容  https://cn.vuejs.org/v2/guide/render-function.html
+```

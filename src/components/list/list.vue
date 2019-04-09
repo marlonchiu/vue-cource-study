@@ -8,8 +8,10 @@
     </ul> -->
     <ul>
       <li @mousemove.prevent="handleMove" v-for="(item, index) in list2" :key="`list_item_${index}`">
-        <span v-if="!render">{{item.number}}</span>
-        <render-dom v-else :render-func="render" :number="item.number"></render-dom>
+        <!-- <span v-if="!render">{{item.number}}</span>
+        <render-dom v-else :render-func="render" :number="item.number"></render-dom> -->
+        <!-- 作用域插槽 -->
+        <slot :number="item.number"></slot>
       </li>
     </ul>
   </div>
