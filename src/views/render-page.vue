@@ -1,11 +1,13 @@
 <template>
   <div>
-    <ul @click="handleClick">
+    <!-- <ul @click="handleClick">
       <li  @click.stop="handleClick" v-for="(item, index) in itemList" :key="`list_item_${index}`">{{item.name}}</li>
-    </ul>
+    </ul> -->
+    <list :list="itemList" :render="renderFunc"></list>
   </div>
 </template>
 <script>
+import List from '_c/list'
 export default {
   name: 'render_page',
   data () {
@@ -17,10 +19,19 @@ export default {
     }
   },
   methods: {
-    handleClick(event) {
+    handleClick (event) {
       console.log(event)
+    },
+    renderFunc (h, name) {
+      return h('i', {
+        style: {
+          color: 'pink'
+        }
+      }, name)
     }
+  },
+  components: {
+    List
   }
 }
 </script>
-

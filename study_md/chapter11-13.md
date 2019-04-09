@@ -311,5 +311,60 @@ render: h => h('div', [
 ```
 
 2）函数式组件
+
+```
+// .../list/render-dom.js
+/**
+ * @description
+ * 函数式组件
+ * 只提供数据，不监听状态  没有实例
+ * 在被引用时会被处理
+ */
+export default {
+  functional: true,
+  props: {
+    name: String,
+    renderFunc: Function
+  },
+  render: (h, ctx) => { // 第一个h代表渲染函数  第二个ctx表示当前实例
+    return ctx.props.renderFunc(h, ctx.props.name)
+  }
+}
+
+// ...list/list.vue  相当于组件的用法
+<render-dom v-else :render-func="render" :name="item.name"></render-dom>
+
+import RenderDom from './render-dom.js'
+components: {
+  RenderDom
+}
+
+
+// render-page.vue
+<list :list="itemList" :render="renderFunc"></list>
+
+import List from '_c/list'
+data () {
+    return {
+      itemList: [
+        { name: 'lison' },
+        { name: 'marlon' }
+      ]
+    }
+  },
+  methods: {
+    renderFunc (h, name) {
+      return h('i', {
+        style: {
+          color: 'pink'
+        }
+      }, name)
+    }
+  },
+  components: {
+    List
+  }
+```
+
 3）JSX语法
 4）作用域插槽
