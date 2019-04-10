@@ -11,7 +11,7 @@ const router = new Router({
 })
 
 // 注册路由全局前置守卫
-const HAS_LOGINED = true
+const HAS_LOGINED = false
 // 页面跳转之前的判断
 router.beforeEach((to, from, next) => {
   to.meta && to.meta.title && setTitle(to.meta.title)

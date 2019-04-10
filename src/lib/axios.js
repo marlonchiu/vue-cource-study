@@ -40,8 +40,10 @@ class HttpRequest {
       delete this.queue[url]
       // return res
       // 处理返回结果(只返回有用的值)
-      const { status, data } = res
-      return { status, data }
+      // const { status, data } = res
+      // return { status, data }
+      const { data } = res
+      return data
     }, error => {
       delete this.queue[url]
       return Promise.reject(error)

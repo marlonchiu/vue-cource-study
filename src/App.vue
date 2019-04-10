@@ -1,38 +1,35 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
+    <!-- <div id="nav"> -->
+      <!-- <router-link to="/">Home</router-link> | -->
       <!-- <router-link to="/about">About</router-link> -->
-      <router-link :to="{name: 'about'}">About</router-link>
-    </div>
-    <!-- 增加页面跳转过渡效果 --> 
+      <!-- <router-link :to="{name: 'about'}">About</router-link> -->
+    <!-- </div> -->
+    <!-- 增加页面跳转过渡效果 -->
     <!-- 单个transition 给多个页面设置用transition-group-->
     <!-- 可以绑定值 -->
-    <!-- <transition-group name='router'> -->  
+    <!-- <transition-group name='router'> -->
     <transition-group :name='routerTransition'>
       <router-view key='default'/>
       <router-view key='email' name="email"/>
       <router-view key='name' name="tel"/>
     </transition-group>
-    
   </div>
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       routerTransition: ''
     }
   },
   watch: {
-    '$route'(to) {
+    '$route' (to) {
       to.query && to.query.transitionName && (this.routerTransition = to.query.transitionName)
     }
   }
 }
 </script>
-
-
 <style lang="less">
 // 页面进入的效果
 .router-enter {

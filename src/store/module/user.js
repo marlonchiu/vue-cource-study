@@ -1,3 +1,5 @@
+import { login } from '@/api/user'
+import { setToken } from '@/lib/util'
 
 const state = {
   userName: 'marlonchiu'
@@ -19,13 +21,41 @@ const actions = {
     // state 表示该模块的 state ；rootState 表示根模块的 state
     dispatch('xxx', '') // 这样可以触发'xxx'的action
   },
-  xxx () {
-    // 操作
+  login ({ commit }, { userName, password }) {
+    // // 操作
+    // login({ userName, password }).then(res => {
+    //   console.log(res)
+    //   if (res.code === 200) {
+    //     // 保存token
+    //     setToken(res.data.token)
+    //   } else {
+    //     console.log(res.mes)
+    //   }
+    // }).catch(error => {
+    //   console.log(error)
+    // })
+    return new Promise((resolve, reject) => {
+      // 操作
+      login({ userName, password }).then(res => {
+        console.log(res)
+        if (res.code === 200 && res.data.token) {
+          // 保存token
+          setToken(res.data.token)
+          resolve()
+        } else {
+          console.log(res.mes)
+          reject(new Error('错误'))
+        }
+      }).catch(error => {
+        console.log(error)
+        reject(error)
+      })
+    })
   }
 }
 
 export default {
-  namespaced: true, // 使用模块命名空间 此时不会受其他外界模块的干扰
+  // namespaced: true, // 使用模块命名空间 此时不会受其他外界模块的干扰
   state,
   getters,
   mutations,

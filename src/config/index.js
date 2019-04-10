@@ -3,4 +3,4 @@
 // 如果前端启用了代理，则第二个开发环境的地址可以是''(空字符串)
 export const baseURL = process.env.NODE_ENV === 'production'
   ? 'http://production.com'
-  : 'http://localhost:3000'
+  : '' // 使用了代理
