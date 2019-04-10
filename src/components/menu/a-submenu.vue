@@ -9,7 +9,7 @@
       <span class="shrink-icon" :style="{ transform: `rotateZ(${showChild ? 0 : 180}deg)`}">^</span>
     </div>
     <div v-show="showChild" class="a-submenu-child-box">
-      <slot></slot> 
+      <slot></slot>
     </div>
   </ul>
 </template>
