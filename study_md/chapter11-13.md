@@ -148,6 +148,7 @@ computed: {
 // 总结：
   计算得到的值  左边栏作为宽度，右边的栏作为左偏移量
 ```
+
 3）鼠标拖动效果
 
 ``` JavaScript
@@ -187,7 +188,7 @@ cursor: col-resize;
 
 4）v-model和.sync的用法
 
-```
+```vue
 // 通知更新值的三个方法（父子组件）
     <!-- 绑定更新一 -->
     <!-- <split-pane :value="offset" @input="handleInput"></split-pane> -->
@@ -312,7 +313,7 @@ render: h => h('div', [
 
 2）函数式组件
 
-```
+``` vue
 // .../list/render-dom.js
 /**
  * @description
@@ -409,7 +410,7 @@ handleEnd () {
 
 4）作用域插槽
 
-```
+```vue
 // list.vue
 <ul>
   <li v-for="(item, index) in list2" :key="`list_item_${index}`">
@@ -418,11 +419,11 @@ handleEnd () {
   </li>
 </ul>
 
-// render-page.vue 
+// render-page.vue
 // countTo作为组件引入
 <!-- 作用域插槽 -->
 // count属性会包括传入的数据
-<list :list2="itemList2"> 
+<list :list2="itemList2">
   <count-to slot-scope="count" :end-val="count.number"></count-to>
 </list>
 
@@ -434,6 +435,7 @@ handleEnd () {
 
 1）封装简单的Menu组件
 2）递归组件
+
 ```vue
 // menu-page.vue
 
