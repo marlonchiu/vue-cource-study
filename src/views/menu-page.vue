@@ -6,8 +6,12 @@
       <!-- 二级标题 -->
       <a-submenu>
         <div slot="title">3333</div>
-        <a-menu-item>3333-1</a-menu-item>
-        <a-menu-item>3333-2</a-menu-item>
+        <a-menu-item>3333-11</a-menu-item>
+        <a-submenu>
+          <div slot="title">3333-22</div>
+          <a-menu-item>3333-22-11</a-menu-item>
+          <a-menu-item>3333-22-22</a-menu-item>
+        </a-submenu>
       </a-submenu>
     </a-menu>
   </div>
