@@ -30,12 +30,17 @@ export default [
     component: () => import('@/views/render-page.vue')
   },
   {
+    path: '/layout',
+    name: 'layout',
+    component: () => import('@/views/layout.vue')
+  },
+  {
     path: '/argu/:name',
     name: 'argu',
     component: () => import('@/components/argu.vue')
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     alias: '/home_page', // 别名
     component: Home,

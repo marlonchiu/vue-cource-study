@@ -90,3 +90,38 @@ logout () {
 通过服务端把token设置到cookies中，无法通过js来读取修改cookies的，
 从而避免跨站脚本攻击
 ```
+
+## 响应式布局
+
+1）vue-cli3.0中使用iview
+2）布局组件的使用
+
+```vue
+// 自定义样式（计算属性）
+<Icon :class="triggerClasses" type="md-menu" size="32"></Icon>
+
+export default {
+  computed: {
+    triggerClasses () {
+      return [
+        'trigger-icon',
+        this.collapsed ? 'rotate' : ''
+      ]
+    }
+  }
+}
+
+// 设置样式
+<style lang="less">
+.trigger-icon{
+  cursor: pointer;
+  transition: transform .3s ease;
+  &.rotate{
+    transform: rotateZ(-90deg);
+    transition: transform .3s ease;
+  }
+}
+</style>
+```
+
+3）格栅组件实现响应式布局

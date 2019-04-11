@@ -31,6 +31,12 @@ export default {
 }
 </script>
 <style lang="less">
+html,body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
 // 页面进入的效果
 .router-enter {
   opacity: 0;
@@ -57,6 +63,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   // text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 #nav {
   padding: 30px;
