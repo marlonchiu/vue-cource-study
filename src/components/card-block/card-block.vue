@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-  
+  name: 'CardBlock'
 }
 </script>
 <style lang="less">

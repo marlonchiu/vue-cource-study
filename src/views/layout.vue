@@ -1,7 +1,9 @@
 <template>
   <div class="layout-wrapper">
     <Layout class="layout-outer">
-      <Sider breakpoint="sm" :default-collapsed="true" collapsible hide-trigger v-model="collapsed"></Sider>
+      <Sider breakpoint="sm" :default-collapsed="true" collapsible hide-trigger v-model="collapsed">
+        <side-menu :collapsed="collapsed" :list="menuList"></side-menu>
+      </Sider>
       <Layout>
         <Header class="header-wrapper">
           <Icon :class="triggerClasses" @click.native="handleCollapsed" type="md-menu" size="32"></Icon>
@@ -16,11 +18,58 @@
   </div>
 </template>
 <script>
+import SideMenu from '_c/side-menu'
 export default {
   name: 'layout',
   data () {
     return {
-      collapsed: false
+      collapsed: false,
+      menuList: [
+        {
+          title: '1111',
+          name: '导航一',
+          icon: 'md-aperture'
+        },
+        {
+          title: '2222',
+          name: '导航二',
+          icon: 'md-aperture'
+        },
+        {
+          title: '3333',
+          name: '导航三',
+          icon: 'md-aperture',
+          children: [
+            {
+              title: '3333-111',
+              name: '导航三一',
+              icon: 'md-aperture'
+            },
+            {
+              title: '3333-222',
+              name: '导航三二',
+              icon: 'md-aperture',
+              children: [
+                {
+                  title: '3333-222-11',
+                  name: '导航三二一',
+                  icon: 'md-aperture'
+                },
+                {
+                  title: '3333-222-22',
+                  name: '导航三二二',
+                  icon: 'md-aperture'
+                }
+              ]
+            },
+            {
+              title: '3333-333',
+              name: '导航三三',
+              icon: 'md-aperture'
+            }
+          ]
+        }
+      ]
     }
   },
   computed: {
@@ -35,6 +84,9 @@ export default {
     handleCollapsed () {
       this.collapsed = !this.collapsed
     }
+  },
+  components: {
+    SideMenu
   }
 }
 </script>

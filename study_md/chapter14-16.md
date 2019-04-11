@@ -136,3 +136,8 @@ export default {
   }
 }
 ```
+
+## 可收缩多级菜单的实现
+
+1）递归组件实战（封装iview的Menu和Dropdown组件）
+2）v-if和v-show对比
