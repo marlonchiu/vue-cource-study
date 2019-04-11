@@ -20,7 +20,7 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import { getUserInfo } from '@/api/user'
-
+import { mapActions } from 'vuex'
 export default {
   props: {
     food: {
@@ -58,6 +58,9 @@ export default {
     next()
   },
   methods: {
+    ...mapActions([
+      'logout'
+    ]),
     handleClick (type) {
       if (type === 'back') {
         this.$router.back()
@@ -91,7 +94,11 @@ export default {
       })
     },
     handleLogout () {
-      
+      // 清除token
+      this.logout()
+      this.$router.push({
+        name: 'login'
+      })
     }
   },
   components: {
