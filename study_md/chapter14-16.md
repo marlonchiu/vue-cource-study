@@ -125,3 +125,14 @@ export default {
 ```
 
 3）格栅组件实现响应式布局
+
+```less
+// 动态设置宽高
+.content-wrapper{
+  padding: 10px;
+  .page-card{
+    // css3的计算属性 100vh表示页面高度的100% header默认高度64px 上下间距20px
+    min-height: ~"calc(100vh - 20px - 64px)";
+  }
+}
+```
