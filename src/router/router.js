@@ -1,9 +1,9 @@
 import Home from '../views/Home.vue'
 export default [
-  // {
-  //   path: '/',
-  //   redirect: '/login'
-  // },
+  {
+    path: '/',
+    redirect: '/login'
+  },
   {
     path: '/login',
     name: 'login',
@@ -35,7 +35,7 @@ export default [
     component: () => import('@/components/argu.vue')
   },
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     alias: '/home_page', // 别名
     component: Home,

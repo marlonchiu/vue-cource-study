@@ -1,4 +1,4 @@
-import { login } from '@/api/user'
+import { login, authorization } from '@/api/user'
 import { setToken } from '@/lib/util'
 
 const state = {
@@ -45,6 +45,25 @@ const actions = {
         } else {
           console.log(res.mes)
           reject(new Error('错误'))
+        }
+      }).catch(error => {
+        console.log(error)
+        reject(error)
+      })
+    })
+  },
+  authorization ({ commit }, token) {
+    return new Promise((resolve, reject) => {
+      authorization().then(res => {
+        console.log(res)
+        if (parseInt(res.code) === 401) { // 说明验证token错误
+          console.log(res.mes)
+          reject(new Error('token error'))
+        } else {
+          // 每次调用authorization方法都会返回新的token
+          // 每次请求获取到新的token 再次保存
+          setToken(res.data.token)
+          resolve()
         }
       }).catch(error => {
         console.log(error)

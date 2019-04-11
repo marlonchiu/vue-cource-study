@@ -10,6 +10,9 @@
     <hr>
     <img :src="imgUrl" alt="">
     <h1 :style="{ background: color }">测试随机颜色</h1>
+    <div>
+      <button @click="handleLogout">退出登录</button>
+    </div>
   </div>
 </template>
 
@@ -86,6 +89,9 @@ export default {
         this.imgUrl = res.data.img
         this.color = res.data.color
       })
+    },
+    handleLogout () {
+      
     }
   },
   components: {

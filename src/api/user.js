@@ -20,3 +20,11 @@ export const login = ({ userName, password }) => {
     }
   })
 }
+
+// 验证token
+export const authorization = () => {
+  return axios.request({
+    url: '/users/authorization',
+    method: 'get'
+  })
+}

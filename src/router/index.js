@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './router'
-import { setTitle } from '@/lib/util'
+import store from '@/store'
+import { setTitle, getToken, setToken } from '@/lib/util'
 
 Vue.use(Router)
 
@@ -11,22 +12,47 @@ const router = new Router({
 })
 
 // 注册路由全局前置守卫
-const HAS_LOGINED = false
+// const HAS_LOGINED = false
 // 页面跳转之前的判断
 router.beforeEach((to, from, next) => {
   to.meta && to.meta.title && setTitle(to.meta.title)
 
-  if (to.name !== 'login') { // 如果当前不是登录页面
-    if (HAS_LOGINED) {
-      next()
-    } else {
+  // if (to.name !== 'login') { // 如果当前不是登录页面
+  //   if (HAS_LOGINED) {
+  //     next()
+  //   } else {
+  //     next({ name: 'login' })
+  //   }
+  // } else { // 如果是在登录页
+  //   if (HAS_LOGINED) {
+  //     next({ name: 'home' })
+  //   } else {
+  //     next()
+  //   }
+  // }
+  // 根据token判定是否登录
+  const token = getToken()
+  if (token) { // 有token的判断
+    // 判断登录是否有效
+    console.log(token)
+    store.dispatch('authorization', token).then(() => {
+      if (to.name === 'login') { // 如果当前是登录页面
+        next({ name: 'home' })
+      } else {
+        next()
+      }
+    }).catch(() => {
+      // 登录验证token错误
+      // 清除错误的token
+      setToken('')
       next({ name: 'login' })
-    }
-  } else { // 如果是在登录页
-    if (HAS_LOGINED) {
-      next({ name: 'home' })
-    } else {
+    })
+  } else {
+    // 如果没有token
+    if (to.name === 'login') { // 如果当前是登录页面
       next()
+    } else {
+      next({ name: 'home' })
     }
   }
 })

@@ -19,7 +19,7 @@ export default {
   name: 'login_page',
   data () {
     return {
-      userName: '',
+      userName: 'marlonchiu',
       password: '123'
     }
   },

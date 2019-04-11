@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { baseURL } from '@/config'
+import { getToken } from '@/lib/util'
+
 // 以类的方式封装
 class HttpRequest {
   // constructor (baseUrl) { // es6语法  直接可以写 baseUrl = baseURL
@@ -29,6 +31,8 @@ class HttpRequest {
         // Spin.show()
       }
       this.queue[url] = true
+      // 在每一次请求中都会把token放入headers字段中
+      config.headers['Authorization'] = getToken()
       return config
     }, error => {
       return Promise.reject(error)
