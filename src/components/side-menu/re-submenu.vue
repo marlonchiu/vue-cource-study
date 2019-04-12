@@ -15,7 +15,7 @@
       <menu-item v-else :key="`meun_${item.name}`" :name="item.name">
         <Icon :type="item.icon"/>
         {{ item.title }}
-        </menu-item>
+      </menu-item>
     </template>
   </Submenu>
 </template>

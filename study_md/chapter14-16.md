@@ -227,4 +227,82 @@ export default {
 </script>
 ```
 
-2）v-if和v-show对比
+2）递归组件实战（Dropdown组件）
+```vue
+// side-menu.vue
+    <!-- 收缩样式展示 -->
+    <div v-show="collapsed" class="drop-wrapper">
+      <template v-for="item in list">
+        <re-dropdown
+          icon-color="#fff"
+          :show-title="false"
+          v-if="item.children"
+          :key="`drop_${item.name}`"
+          :parent="item">
+        </re-dropdown>
+        <Tooltip v-else transfer placement="right" theme="dark" :content="item.title" :key="`drop_${item.name}`">
+          <span class="drop-menu-span">
+            <Icon :type="item.icon" color="#fff" size="20"/>
+          </span>
+        </Tooltip>
+      </template>
+    </div>
+
+// re-dropdown.vue
+/**拆分成为递归组件 */
+<template>
+  <Dropdown placement="right-start" >
+    <span class="drop-menu-span" :style="titleStyle">
+      <Icon :type="parent.icon" :color="iconColor" size="20"/>
+      <span v-if="showTitle">{{ parent.title }}</span>
+    </span>
+    <DropdownMenu slot="list">
+      <template v-for="item in parent.children">
+        <re-dropdown
+          v-if="item.children"
+          :key="`drop_${item.name}`"
+          :parent="item">
+        </re-dropdown>
+        <DropdownItem v-else :key="`drop_${item.name}`" :name="item.name">
+          <Icon :type="item.icon" size="20"/>
+          {{ item.title }}
+        </DropdownItem>
+      </template>
+  </DropdownMenu>
+  </Dropdown>
+</template>
+<script>
+export default {
+  name: 'ReDropdown',
+  props: {
+    parent: {
+      type: Object,
+      default: () => ({})
+    },
+    iconColor: {
+      type: String,
+      default: '#515a6e'
+    },
+    showTitle: {
+      type: Boolean,
+      default: true
+    }
+  },
+  computed: {
+    titleStyle () {
+      return {
+        textAlign: this.showTitle ? 'left' : 'center',
+        paddingLeft: this.showTitle ? '16px' : '0'
+      }
+    }
+  }
+}
+</script>
+```
+
+3）v-if和v-show对比
+
+```txt
+// v-if 只是需要渲染一次，
+// v-show  适用于需要频繁操作的渲染
+```
