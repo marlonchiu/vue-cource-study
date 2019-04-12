@@ -1,6 +1,6 @@
 <template>
   <div class="table-page">
-    <edit-table :columns="columns" :data="tableData"></edit-table>
+    <edit-table :columns="columns" v-model="tableData" @on-edit="handleEdit"></edit-table>
   </div>
 </template>
 <script>
@@ -21,6 +21,11 @@ export default {
     getTableData().then((res) => {
       this.tableData = res
     })
+  },
+  methods: {
+    handleEdit ({ row, index, column, newVal }) {
+      console.log({ row, index, column, newVal })
+    }
   },
   components: {
     EditTable
