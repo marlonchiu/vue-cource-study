@@ -41,6 +41,10 @@ export default [
       {
         path: '/table',
         component: () => import('@/views/table.vue')
+      },
+      {
+        path: '/folder-tree',
+        component: () => import('@/views/folder-tree/folder-tree.vue')
       }
     ]
   },
