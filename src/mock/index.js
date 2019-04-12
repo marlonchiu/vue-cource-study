@@ -1,9 +1,13 @@
 import Mock from 'mockjs'
 import { getUserInfo } from './response/user'
+import { getTableData } from './response/data'
 const Random = Mock.Random
 // 定义中间接口数据
 // 使用mockjs 拦截userInfo接口
-Mock.mock('http://localhost:3000/getUserInfo', 'post', getUserInfo)
+// Mock.mock('http://localhost:3000/getUserInfo', 'post', getUserInfo)
+Mock.mock(/\/getUserInfo/, 'post', getUserInfo)
+Mock.mock(/\/getTableData/, 'get', getTableData)
+
 Mock.setup({ // 请求响应时间
   // timeout: 500,
   timeout: '10-50'

@@ -8,7 +8,7 @@ import iview from 'iview'
 import 'iview/dist/styles/iview.css'
 
 // 只有在生产环境下使用mock
-// if (process.env.NODE_ENV !== 'production') require('./mock')
+if (process.env.NODE_ENV !== 'production') require('./mock')
 
 Vue.config.productionTip = false
 Vue.prototype.$bus = Bus

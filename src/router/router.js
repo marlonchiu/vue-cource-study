@@ -35,8 +35,12 @@ export default [
     component: () => import('@/views/layout.vue'),
     children: [
       {
-        path: '/layout',
+        path: '/card',
         component: () => import('@/components/card-block')
+      },
+      {
+        path: '/table',
+        component: () => import('@/views/table.vue')
       }
     ]
   },

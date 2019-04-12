@@ -41,9 +41,9 @@ export default {
     handleClick (name) {
       // if (!this.showTitle) { // 如果不判断的话会触发两次的点击（第三级点击）
       //   console.log(name)
-      // }   
+      // }
       // 将两个操作统一一下
-      if (!this.showTitle) this.$emit('on-select', name) 
+      if (!this.showTitle) this.$emit('on-select', name)
     }
   },
   computed: {
