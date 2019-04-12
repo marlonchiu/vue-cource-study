@@ -1,7 +1,7 @@
 <template>
   <div class="layout-wrapper">
     <Layout class="layout-outer">
-      <Sider breakpoint="sm" :default-collapsed="true" collapsible hide-trigger v-model="collapsed">
+      <Sider breakpoint="sm" :default-collapsed="false" collapsible hide-trigger v-model="collapsed" :width="200">
         <side-menu :collapsed="collapsed" :list="menuList"></side-menu>
       </Sider>
       <Layout>
