@@ -17,7 +17,7 @@ export const getTableData = () => {
 export const getFileList = () => {
   const template = {
     'name|5': '@cword',
-    'create_time': '@datetime',
+    'creat_time': '@datetime',
     'folder_id|1-5': 0,
     'id|+1': 10000
   }
@@ -31,13 +31,13 @@ export const getFileList = () => {
 export const getFolderList = () => {
   const template1 = {
     'name|1': '@word',
-    'create_time': '@datetime',
+    'creat_time': '@datetime',
     'folder_id': 0,
     'id|+1': 1
   }
   const template2 = {
     'name|1': '@word',
-    'create_time': '@datetime',
+    'creat_time': '@datetime',
     'folder_id|+1': 1,
     'id|+1': 4
   }
