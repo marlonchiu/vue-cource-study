@@ -1,11 +1,13 @@
 <template>
   <div class="table-page">
-    <edit-table :columns="columns" v-model="tableData" @on-edit="handleEdit"></edit-table>
+    <!-- <edit-table :columns="columns" v-model="tableData" @on-edit="handleEdit"></edit-table> -->
+    <edit-table-mul :columns="columns" v-model="tableData" @on-edit="handleEdit"></edit-table-mul>
   </div>
 </template>
 <script>
 import { getTableData } from '@/api/data'
-import EditTable from '_c/edit-table'
+// import EditTable from '_c/edit-table'
+import EditTableMul from '_c/edit-table-mul'
 export default {
   data () {
     return {
@@ -28,7 +30,8 @@ export default {
     }
   },
   components: {
-    EditTable
+    // EditTable,
+    EditTableMul
   }
 }
 </script>
