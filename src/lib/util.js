@@ -67,3 +67,26 @@ export const transferFolderToTree = (folderList) => {
   }
   return handle(0)
 }
+
+// 展开指定的文件夹
+export const expandSpecifiedFolder = (folderTree, id) => {
+  return folderTree.map(item => {
+    if (item.type === 'folder') { // 展开的是文件夹
+      if (item.id === id) {
+        item.expand = true
+      } else {
+        if (item.children && item.children.length) {
+          item.children = expandSpecifiedFolder(item.children, id)
+          if (item.children.some(child => { // 如果展开的子级有一个为true 则它的父级也为true
+            return child.expand === true
+          })) {
+            item.expand = true
+          } else {
+            item.expand = false
+          }
+        }
+      }
+    }
+    return item
+  })
+}

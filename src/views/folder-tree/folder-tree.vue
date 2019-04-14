@@ -2,7 +2,12 @@
   <div class="folder-wrapper">
     <!-- <Tree :data="folderTree" :render="renderFunc"></Tree> -->
     <!-- 使用自己封装的folder-tree组件 -->
-    <folder-tree :folder-list="folderList" :file-list="fileList"></folder-tree>
+    <folder-tree
+      :folder-list.sync="folderList"
+      :file-list.sync="fileList"
+      :folder-drop="folderDrop"
+      :file-drop="fileDrop">
+      </folder-tree>
   </div>
 </template>
 <script>
@@ -14,7 +19,15 @@ export default {
   data () {
     return {
       folderList: [],
-      fileList: []
+      fileList: [],
+      folderDrop: [
+        { name: 'rename', title: '重命名' },
+        { name: 'delete', title: '删除文件夹' }
+      ],
+      fileDrop: [
+        { name: 'rename', title: '重命名' },
+        { name: 'delete', title: '删除文件' }
+      ]
       // folderTree: [],
       // 自定义渲染
       // renderFunc: (h, { root, node, data }) => {
