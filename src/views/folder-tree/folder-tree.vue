@@ -6,7 +6,8 @@
       :folder-list.sync="folderList"
       :file-list.sync="fileList"
       :folder-drop="folderDrop"
-      :file-drop="fileDrop">
+      :file-drop="fileDrop"
+      :beforeDelete="beforeDelete">
       </folder-tree>
   </div>
 </template>
@@ -61,6 +62,23 @@ export default {
       this.folderList = res[0]
       this.fileList = res[1]
     })
+  },
+  methods: {
+    beforeDelete () {
+      // 调用删除接口  只有后台数据也删除了在视图上文件夹或文件才显示删除的效果
+      // 模拟删除的操作
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // let error = null
+          let error = new Error('error')
+          if (!error) {
+            resolve()
+          } else {
+            reject(error)
+          }
+        }, 2000)
+      })
+    }
   },
   components: {
     FolderTree

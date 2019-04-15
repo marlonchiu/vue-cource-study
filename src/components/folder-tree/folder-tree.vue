@@ -61,7 +61,9 @@ export default {
     },
     // 定义下拉条目
     folderDrop: Array,
-    fileDrop: Array
+    fileDrop: Array,
+    // 删除的钩子函数
+    beforeDelete: Function
   },
   mounted () {
     this.transData()
@@ -75,16 +77,20 @@ export default {
     },
     handleDelete (data) {
       const isFolder = this.isFolder(data.type)
+      const folderId = data.folder_id
       let updateListName = isFolder ? 'folderList' : 'fileList'
       let list = isFolder ? clonedeep(this.folderList) : clonedeep(this.fileList)
       // 过滤掉要删除的  得到最新的数组
       list = list.filter(item => item.id !== data.id)
       // 只需要区更新 folderList 或者 fileList
       this.$emit(`update:${updateListName}`, list)
+      this.$nextTick(() => {
+        expandSpecifiedFolder(this.folderTree, folderId)
+      })
     },
     handleDropdownClick (data, name) {
       // console.log(data, name)
-      const folderId = data.folder_id
+      
       if (name === 'rename') {
         this.currentRenamingId = `${data.type || 'file'}_${data.id}`
       } else if (name === 'delete') {
@@ -92,10 +98,12 @@ export default {
           title: '提示',
           content: `您确定要删除${this.isFolder(data.type) ? '文件夹' : '文件'}《${data.title}》吗？`,
           onOk: () => {
-            this.handleDelete(data)
-            this.$nextTick(() => {
-              expandSpecifiedFolder(this.folderTree, folderId)
-            })
+            // 判断有无删除的钩子函数
+            this.beforeDelete ? this.beforeDelete().then(() => {
+              this.handleDelete(data)
+            }).catch(() => {
+              this.$Message.error('删除失败')
+            }) : this.handleDelete(data)
           }
         })
       }

@@ -679,4 +679,80 @@ export const expandSpecifiedFolder = (folderTree, id) => {
 ```
 
 3）多个属性v-modle替代方案
+
+```vue
+<folder-tree
+  :folder-list.sync="folderList"
+  :file-list.sync="fileList">
+</folder-tree>
+
+// 多个属性的v-modle 使用 .sync来实现
+// 对应更新数据  
+this.$emit(`update:${updateListName}`, list)
+```
+
 4）增加钩子函数
+
+``` javascript
+// 再删除的操作中增加钩子函数  后台返回成功了再在视图上显示更新
+// ...src/views/folder-tree.vue
+
+// 视图template
+// <folder-tree :beforeDelete="beforeDelete"></folder-tree>
+  methods: {
+    beforeDelete () {
+      // 调用删除接口  只有后台数据也删除了在视图上文件夹或文件才显示删除的效果
+      // 模拟删除的操作
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // let error = null
+          let error = new Error('error')
+          if (!error) {
+            resolve()
+          } else {
+            reject(error)
+          }
+        }, 2000)
+      })
+    }
+  },
+
+// ...src/components/folder-tree.vue
+// props中要先接收一下 beforeDelete 函数  判断是否有无钩子函数还决定视图的更新
+methods: {
+    isFolder (type) {
+      return type === 'folder'
+    },
+    handleDelete (data) {
+      const isFolder = this.isFolder(data.type)
+      const folderId = data.folder_id
+      let updateListName = isFolder ? 'folderList' : 'fileList'
+      let list = isFolder ? clonedeep(this.folderList) : clonedeep(this.fileList)
+      // 过滤掉要删除的  得到最新的数组
+      list = list.filter(item => item.id !== data.id)
+      // 只需要区更新 folderList 或者 fileList
+      this.$emit(`update:${updateListName}`, list)
+      this.$nextTick(() => {
+        expandSpecifiedFolder(this.folderTree, folderId)
+      })
+    },
+    handleDropdownClick (data, name) {
+      if (name === 'rename') {
+        // this.currentRenamingId = `${data.type || 'file'}_${data.id}`
+      } else if (name === 'delete') {
+        this.$Modal.confirm({
+          title: '提示',
+          content: `您确定要删除${this.isFolder(data.type) ? '文件夹' : '文件'}《${data.title}》吗？`,
+          onOk: () => {
+            // 判断有无删除的钩子函数
+            this.beforeDelete ? this.beforeDelete().then(() => {
+              this.handleDelete(data)
+            }).catch(() => {
+              this.$Message.error('删除失败')
+            }) : this.handleDelete(data)
+          }
+        })
+      }
+    },
+  },
+```
