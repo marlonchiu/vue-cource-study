@@ -25,6 +25,15 @@
 3. 安装Express
   npm install express -g //全局安装
   npm install express-generator -g //安装全局变量
+
+4. 数据库安装及Redis安装完毕后
+  4.1 先建立连接
+        文件 --> 新建连接 --> MySQL
+        输入账号密码 （默认主机localhost 端口号3306 账号root）
+  4.2 在上述连接下创建一个数据库 fss
+      点击连接名称 右键 --> 新建数据库 --> 输入数据库名称 fss
+  4.3 启动 fss-server项目服务
+      npm run local
 ```
 
 2）前端文件上传、下载

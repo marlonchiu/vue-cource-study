@@ -30,6 +30,11 @@ export default [
     component: () => import('@/views/render-page.vue')
   },
   {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('@/views/upload.vue')
+  },
+  {
     path: '/layout',
     name: 'layout',
     component: () => import('@/views/layout.vue'),
