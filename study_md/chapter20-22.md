@@ -37,4 +37,60 @@
 ```
 
 2）前端文件上传、下载
+
+* 上传
+
+```vue
+// 上传文件需要现在本地创建一个file_storage文件夹，与 fss-server同级的
+<Upload
+    :action="`${baseURL}/upload_file`"
+    multiple
+    :before-upload="beforeUpload"
+    :on-success="handleSuccess">
+    <Button icon="ios-cloud-upload-outline">Upload Files</Button>
+</Upload>
+
+// 方法
+beforeUpload (file) {
+  this.file = file
+},
+handleSuccess () {
+  this.$Message.success('文件上传成功')
+},
+```
+
+* 下载
+
+```JavaScript
+// 封装下载的form表单提交方法 src/lib/util.js
+// 下载文件的方法(模拟表单提交)
+export const downloadFile = ({ url, params }) => {
+  const form = document.createElement('form')
+  form.setAttribute('action', url)
+  form.setAttribute('method', 'post')
+  for (const key in params) {
+    const input = document.createElement('input')
+    input.setAttribute('type', 'hidden')
+    input.setAttribute('name', key)
+    input.setAttribute('value', params[key])
+    form.appendChild(input)
+  }
+  document.body.appendChild(form)
+  form.submit()
+  form.remove()
+}
+
+// upload.vue
+import { downloadFile } from '@/lib/util'
+download (key) {
+  downloadFile({
+  url: `${baseURL}/get_file`,
+  params: {
+    key,
+    type: 'download'
+    }
+  })
+}
+```
+
 3）自行控制文件上传

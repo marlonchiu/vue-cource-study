@@ -1,6 +1,7 @@
 /* 用于与业务结合的工具方法 */
 import Cookies from 'js-cookie'
 import clonedeep from 'clonedeep'
+import { format } from 'path';
 
 export const setTitle = (title) => {
   window.document.title = title || 'admin'
@@ -89,4 +90,21 @@ export const expandSpecifiedFolder = (folderTree, id) => {
     }
     return item
   })
+}
+
+// 下载文件的方法(模拟表单提交)
+export const downloadFile = ({ url, params }) => {
+  const form = document.createElement('form')
+  form.setAttribute('action', url)
+  form.setAttribute('method', 'post')
+  for (const key in params) {
+    const input = document.createElement('input')
+    input.setAttribute('type', 'hidden')
+    input.setAttribute('name', key)
+    input.setAttribute('value', params[key])
+    form.appendChild(input)
+  }
+  document.body.appendChild(form)
+  form.submit()
+  form.remove()
 }

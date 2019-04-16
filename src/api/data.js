@@ -22,3 +22,26 @@ export const getFileList = () => {
     method: 'get'
   })
 }
+
+// 获取文件列表(文件上传下载用的接口)
+export const getFilesList = () => {
+  return axios.request({
+    url: '/get_file_list',
+    method: 'get',
+    params: {
+      userId: 1
+    }
+  })
+}
+
+// 获取文件信息(文件上传下载用的接口)
+export const getFile = ({ key, type }) => {
+  return axios.request({
+    url: '/get_file',
+    method: 'post',
+    data: {
+      key,
+      type
+    }
+  })
+}
