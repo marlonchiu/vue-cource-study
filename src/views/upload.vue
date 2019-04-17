@@ -1,6 +1,7 @@
 <template>
   <div class="upload-page">
     <Upload
+      ref="upload"
       :action="`${baseURL}/upload_file`"
       multiple
       :before-upload="beforeUpload"
@@ -8,6 +9,7 @@
       :show-upload-list="false">
       <Button icon="ios-cloud-upload-outline">Upload Files</Button>
     </Upload>
+    <Button @click="handleUpload">确认上传吧</Button>
     <Table :columns="columns" :data="fileList"></Table>
     <!-- 读取显示文本的内容 -->
     <Modal v-model="showModal">
@@ -73,13 +75,19 @@ export default {
       getFilesList().then(res => {
         this.fileList = res
       })
+    }, 
+    handleUpload () {
+      // 调用upload原生的post上传方法
+      this.$refs.upload.post(this.file)
     },
     beforeUpload (file) {
       this.file = file
+      return false
     },
     handleSuccess () {
       this.$Message.success('文件上传成功')
       this.updateFilesList()
+      this.file = null
     },
     download (key) {
       downloadFile({

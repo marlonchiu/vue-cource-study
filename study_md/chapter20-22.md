@@ -125,3 +125,20 @@ deleteFile (data) {
 ```
 
 3）自行控制文件上传
+
+```javascript
+// 选择文件后判断 beforeUpload方法中执行
+handleUpload () {
+  // 调用upload原生的post上传方法
+  this.$refs.upload.post(this.file)
+},
+beforeUpload (file) {
+  this.file = file
+  return false
+},
+handleSuccess () {
+  this.$Message.success('文件上传成功')
+  this.updateFilesList()
+  this.file = null
+},
+```
