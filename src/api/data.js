@@ -45,3 +45,14 @@ export const getFile = ({ key, type }) => {
     }
   })
 }
+
+// 删除文件(文件上传下载用的接口)
+export const deleteFile = (key) => {
+  return axios.request({
+    url: '/delete_file',
+    method: 'delete',
+    data: {
+      key
+    }
+  })
+}

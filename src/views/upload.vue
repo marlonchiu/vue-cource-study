@@ -4,20 +4,29 @@
       :action="`${baseURL}/upload_file`"
       multiple
       :before-upload="beforeUpload"
-      :on-success="handleSuccess">
+      :on-success="handleSuccess"
+      :show-upload-list="false">
       <Button icon="ios-cloud-upload-outline">Upload Files</Button>
     </Upload>
     <Table :columns="columns" :data="fileList"></Table>
+    <!-- 读取显示文本的内容 -->
+    <Modal v-model="showModal">
+      <div style="height: 300px; overflow: auto;">
+        {{ content }}
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
 import { baseURL } from '@/config'
-import { getFilesList, getFile } from '@/api/data'
+import { getFilesList, getFile, deleteFile } from '@/api/data'
 import { downloadFile } from '@/lib/util'
 export default {
   data () {
     return {
       baseURL,
+      showModal: false,
+      content: null,
       file: {},
       columns: [
         { title: '文件key', key: 'key' },
@@ -34,6 +43,11 @@ export default {
             )
           }
         },
+        /**
+         * @description
+         *  下载
+         *  显示内容  // 当文本的类型中包含text时表示可以点击显示
+         */
         {
           title: '操作',
           key: 'handle',
@@ -41,35 +55,31 @@ export default {
             return (
               <span>
                 <i-button on-click={this.download.bind(this, row.key)}>下载</i-button>
+                <i-button disabled={!row.file_type.includes('text')} on-click={this.showFileContent.bind(this, row.key)}>显示内容</i-button>
+                <i-button on-click={this.deleteFile.bind(this, row)}>删除</i-button>
               </span>
             )
           }
-          // render: (h, { row }) => {
-          //   return (
-          //     <span>
-          //       <i-button on-click={this.download.bind(this, row.key)}>下载</i-button>
-          //       <i-button disabled={!row.file_type.includes('text')} on-click={this.showFileContent.bind(this, row.key)}>显示内容</i-button>
-          //       <i-button on-click={this.deleteFile.bind(this, row.key)}>删除</i-button>
-          //     </span>
-          //   )
-          // }
         }
       ],
       fileList: []
     }
   },
   mounted () {
-    getFilesList().then(res => {
-      // console.log(res)
-      this.fileList = res
-    })
+    this.updateFilesList()
   },
   methods: {
+    updateFilesList () {
+      getFilesList().then(res => {
+        this.fileList = res
+      })
+    },
     beforeUpload (file) {
       this.file = file
     },
     handleSuccess () {
       this.$Message.success('文件上传成功')
+      this.updateFilesList()
     },
     download (key) {
       downloadFile({
@@ -79,9 +89,26 @@ export default {
           type: 'download'
         }
       })
-      // getFile({ key, type: 'download' }).then(res => {
-      //   console.log(res)
-      // })
+      
+    },
+    showFileContent (key) {
+      getFile({ key, type: 'text' }).then(res => {
+        // console.log(res)
+        this.content = res
+        this.showModal = true
+      })
+    },
+    deleteFile (data) {
+      this.$Modal.confirm({
+        title: '提示',
+        content: `您确定要删除文件《${data.file_name}》吗？`,
+        onOk: () => {
+          deleteFile(data.key).then(res => {
+            // console.log(res)
+            this.updateFilesList()
+          })
+        }
+      })
     }
   }
 }

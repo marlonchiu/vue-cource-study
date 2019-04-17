@@ -93,4 +93,35 @@ download (key) {
 }
 ```
 
+* 删除
+
+```JavaScript
+// 封装删除文件方法 src/api/data.js
+// 删除文件(文件上传下载用的接口)
+export const deleteFile = (key) => {
+  return axios.request({
+    url: '/delete_file',
+    method: 'delete',
+    data: {
+      key
+    }
+  })
+}
+
+// upload.vue
+import { deleteFile } from '@/api/data'
+deleteFile (data) {
+  this.$Modal.confirm({
+    title: '提示',
+    content: `您确定要删除文件《${data.file_name}》吗？`,
+    onOk: () => {
+      deleteFile(data.key).then(res => {
+        // console.log(res)
+        // this.updateFilesList()
+      })
+    }
+  })
+}
+```
+
 3）自行控制文件上传
