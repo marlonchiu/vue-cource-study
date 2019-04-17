@@ -1,7 +1,6 @@
 /* 用于与业务结合的工具方法 */
 import Cookies from 'js-cookie'
 import clonedeep from 'clonedeep'
-import { format } from 'path';
 
 export const setTitle = (title) => {
   window.document.title = title || 'admin'
