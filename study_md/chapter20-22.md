@@ -142,3 +142,52 @@ handleSuccess () {
   this.file = null
 },
 ```
+
+## Form表单
+
+1）基础表单
+
+```javascript
+// iview form表单基础使用 验证规则的自定义
+// 自定义验证规则
+const validateName = (rule, value, callback) => {
+  if (value !== 'lison') {
+    callback(new Error('Username Error'))
+  } else {
+    callback()
+  }
+}
+
+export default {
+  data () {
+    return {
+      formData: {
+        name: '',
+        age: 18
+      },
+      rules: {
+        name: [
+          // trigger: 'blur' 触发时机  当失去焦点时触发
+          { required: true, message: 'Please fill in the user name', trigger: 'blur' },
+          { validator: validateName, trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    handleSubmit () {
+      // 提交前  验证表单数据
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          sendFormData(this.formData).then(res => {
+            console.log(res)
+          })
+        }
+      })
+    }
+  }
+}
+```
+
+2）动态组件
+3）动态表单

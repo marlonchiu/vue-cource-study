@@ -56,3 +56,12 @@ export const deleteFile = (key) => {
     }
   })
 }
+
+// form表单数据(表单数据提交用的接口)
+export const sendFormData = (data) => {
+  return axios.request({
+    url: '/data/formData',
+    method: 'post',
+    data: data
+  })
+}

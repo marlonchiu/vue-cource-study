@@ -35,6 +35,11 @@ export default [
     component: () => import('@/views/upload.vue')
   },
   {
+    path: '/form',
+    name: 'form',
+    component: () => import('@/views/form.vue')
+  },
+  {
     path: '/layout',
     name: 'layout',
     component: () => import('@/views/layout.vue'),
