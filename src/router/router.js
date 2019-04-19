@@ -137,6 +137,14 @@ export const routes = [
     component: () => import('@/views/login.vue')
   },
   {
+    path: '/icon_page',
+    name: 'icon_page',
+    meta: {
+      title: '图标'
+    },
+    component: () => import('@/views/icon_page.vue')
+  },
+  {
     path: '*',
     component: () => import('@/views/error_404.vue')
   }
