@@ -1,8 +1,13 @@
 import Home from '../views/Home.vue'
-export const routerMap = [
+export default [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login.vue')
   },
   {
     path: '/count-to',
@@ -124,17 +129,7 @@ export const routerMap = [
   },
   {
     path: '/store',
-    name: 'store',
     component: () => import('@/views/store.vue')
-  }
-]
-
-// 不需要权限验证的页面
-export const routes = [
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/login.vue')
   },
   {
     path: '*',

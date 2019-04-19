@@ -28,6 +28,8 @@ router.get('/authorization', (req, res, next) => {
           argu: true,
           count_to: true,
           menu_page: true,
+          layout: true,
+          card: true,
           upload: true,
           form: true,
           folder_tree: true,

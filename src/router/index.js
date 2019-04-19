@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import routes from './router'
+import { routes } from './router'
 import store from '@/store'
 import { setTitle, getToken, setToken } from '@/lib/util'
+import clonedeep from 'clonedeep'
 
 Vue.use(Router)
 
@@ -31,28 +32,58 @@ router.beforeEach((to, from, next) => {
   //   }
   // }
   // 根据token判定是否登录
+  // const token = getToken()
+  // if (token) { // 有token的判断
+  //   // 判断登录是否有效
+  //   console.log(token)
+  //   store.dispatch('authorization', token).then(() => {
+  //     if (to.name === 'login') { // 如果当前是登录页面
+  //       next({ name: 'home' })
+  //     } else {
+  //       next()
+  //     }
+  //   }).catch(() => {
+  //     // 登录验证token错误
+  //     // 清除错误的token
+  //     setToken('')
+  //     next({ name: 'login' })
+  //   })
+  // } else {
+  //   // 如果没有token
+  //   if (to.name === 'login') { // 如果当前是登录页面
+  //     next()
+  //   } else {
+  //     next({ name: 'home' })
+  //   }
+  // }
+  // 根据token判定是否登录  然后进行路由权限验证
   const token = getToken()
   if (token) { // 有token的判断
     // 判断登录是否有效
     console.log(token)
-    store.dispatch('authorization', token).then(() => {
-      if (to.name === 'login') { // 如果当前是登录页面
-        next({ name: 'home' })
-      } else {
-        next()
-      }
-    }).catch(() => {
-      // 登录验证token错误
-      // 清除错误的token
-      setToken('')
-      next({ name: 'login' })
-    })
+    // 判断是否获取了路由列表
+    if (!store.state.router.hasGetRules) {
+      store.dispatch('authorization', token).then((rules) => {
+        // 过滤列表（合并路由）
+        store.dispatch('concatRoutes', rules).then(routers => {
+          router.addRoutes(clonedeep(routers)) // 不建议直接修改state对象
+          next({ ...to, replace: true })
+        })
+      }).catch(() => {
+        // 登录验证token错误
+        // 清除错误的token
+        setToken('')
+        next({ name: 'login' })
+      })
+    } else {
+      next()
+    }
   } else {
     // 如果没有token
     if (to.name === 'login') { // 如果当前是登录页面
       next()
     } else {
-      next({ name: 'home' })
+      next({ name: 'login' })
     }
   }
 })
@@ -85,6 +116,6 @@ router.afterEach((form, to) => {
  * 10.调用全局的后置守卫 afterEach
  * 11.触发页面DOM更新
  * 12.用创建好的实例调用beforeRouteEnter守卫里传给next的回调函数
- *  */
+ * */
 
 export default router

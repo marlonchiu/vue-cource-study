@@ -2,7 +2,8 @@ import { login, authorization } from '@/api/user'
 import { setToken } from '@/lib/util'
 
 const state = {
-  userName: 'marlonchiu'
+  userName: 'marlonchiu',
+  rules: {}
 }
 const getters = {
   firstLetter: (state) => {
@@ -13,6 +14,9 @@ const getters = {
 const mutations = {
   SET_USER_NAME (state, params) {
     state.userName = params
+  },
+  SET_RULES (state, rules) {
+    state.rules = rules
   }
 }
 
@@ -63,7 +67,9 @@ const actions = {
           // 每次调用authorization方法都会返回新的token
           // 每次请求获取到新的token 再次保存
           setToken(res.data.token)
-          resolve()
+          // 把page页面的路由返回
+          resolve(res.data.rules.page)
+          commit('SET_RULES', res.data.rules.component)
         }
       }).catch(error => {
         console.log(error)
