@@ -29,6 +29,13 @@
 
 
  // 适用于用户种类比较少的情况，最好不要超过10种角色
+    /* 优点：
+     *     后端只需要返回当前用户的用户组列表，其余的操作只需要前端来实现
+     *     前端在路由中配置权限字段即可
+     * 场景：
+     *      适用于用户组权限数量较少，如果太多判断起来也是很痛苦的，access权限组标识太多
+     *      适用于用户种类比较少的情况，最好不要超过10种角色
+    */
 
 // @/router/index.js
 import Vue from 'vue'
@@ -94,6 +101,15 @@ router.afterEach(to => {
 export default router
 
 // @/lib/util.js
+/**
+ * @param {*} access 用户权限数组，如 ['super_admin', 'admin']
+ * @param {*} route 路由列表
+ */
+const hasAccess = (access, route) => {
+  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
+  else return true
+}
+
 /**
  * 权鉴
  * @param {*} name 即将跳转的路由name
