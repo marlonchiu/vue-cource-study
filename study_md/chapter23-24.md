@@ -144,3 +144,67 @@ export default {
 }
 </script>
 ```
+
+## 大量数据性能优化
+
+0）select checkbox 优化
+
+* selectOption
+
+```vue
+// npm install vue-virtual-scroll-list --save
+
+<template>
+  <div>
+    <Select v-model="selectData" style="width:200px">
+      <virtual-list :size="30" :remain="6">
+        <Option v-for="item in list" :value="item.value" :key="item.value">{{ item.label }}</Option>
+      </virtual-list>
+    </Select>
+  </div>
+</template>
+<script>
+import { doCustomTimes } from '@/lib/tools'
+import VirtualList from 'vue-virtual-scroll-list'
+export default {
+  data () {
+    return {
+      selectData: 0,
+      list: []
+    }
+  },
+  mounted () {
+    let list = []
+    doCustomTimes(1000, (index) => {
+      list.push({
+        value: index,
+        label: `select_${index}`
+      })
+    })
+    this.list = list
+  },
+  components: {
+    VirtualList
+  }
+}
+</script>
+```
+
+* CheckboxGroup
+
+```vue
+// 这样当大量的数据需要渲染时，页面渲染很快且操作不卡顿，无论多少条数据，渲染的只是很少的一部分
+<CheckboxGroup v-model="checkedArr">
+  <virtual-list :size="30" :remain="10">
+    <p v-for="item in list" :key="`check${item.value}`" style="height: 30px;">
+      <Checkbox :label="item.value">
+          <Icon type="logo-twitter"></Icon>
+          <span>{{ item.label }}</span>
+      </Checkbox>
+    </p>
+  </virtual-list>
+</CheckboxGroup>
+```
+1）列表优化
+2）大型表单优化
+3）表格优化

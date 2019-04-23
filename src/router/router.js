@@ -137,6 +137,11 @@ export const routes = [
     component: () => import('@/views/login.vue')
   },
   {
+    path: '/optimize',
+    name: 'optimize',
+    component: () => import('@/views/optimize.vue')
+  },
+  {
     path: '/icon_page',
     name: 'icon_page',
     meta: {
