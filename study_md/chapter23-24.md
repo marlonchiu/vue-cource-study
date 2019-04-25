@@ -205,6 +205,152 @@ export default {
   </virtual-list>
 </CheckboxGroup>
 ```
+
+* form-group
+
+```vue
+// form.vue
+<template>
+  <div class="form-wrapper">
+    <Button type="primary" @click="handleSubmit">提交</Button>
+    <Button @click="handleReset">重置</Button>
+    <form-single v-for="(item, index) in formList"
+      ref="formSingle"
+      :config="item"
+      :value-data="valueData"
+      :rule-data="ruleData"
+      :error-store="errorStore"
+      :key="`form_${index}`"></form-single>
+  </div>
+</template>
+<script>
+import { sendFormData } from '@/api/data'
+import clonedeep from 'clonedeep'
+import FormSingle from '_c/form-single'
+import formData from '@/mock/response/form-data'
+export default {
+  data () {
+    return {
+      url: '/data/formData',
+      formList: formData,
+      valueData: {},
+      ruleData: {},
+      errorStore: {},
+      initValueList: {}
+    }
+  },
+  mounted () {
+    let valueData = {}
+    let ruleData = {}
+    let errorStore = {}
+    let initValueList = {}
+    // 循环formData数据 添加value rule error
+    formData.forEach(item => {
+      valueData[item.name] = item.value
+      ruleData[item.name] = item.rule
+      errorStore[item.name] = ''
+      initValueList[item.name] = item.value
+    })
+    this.valueData = valueData
+    this.ruleData = ruleData
+    this.errorStore = errorStore
+    this.initValueList = initValueList
+  },
+  methods: {
+    handleSubmit () {
+      let isValid = true // 是否验证通过的标识
+      // this.$refs.formSingle 获取到的是一个数组
+      this.$refs.formSingle.forEach(item => {
+        item.validate(valid => {
+          if (!valid) isValid = false
+        })
+      })
+      if (isValid) {
+        sendFormData({
+          url: this.url,
+          data: this.valueData
+        }).then(res => {
+          console.log(res)
+          this.$emit('on-submit-success', res)
+        }).catch(error => {
+          console.log(error)
+          this.$emit('on-submit-error', error)
+          for (let key in error) {
+            this.errorStore[key] = error[key]
+          }
+        })
+      } else {
+        this.$Message.error('Fail!')
+      }
+    },
+    handleReset () {
+      this.valueData = clonedeep(this.initValueList)
+    }
+  },
+  components: {
+    FormSingle
+  }
+}
+</script>
+
+// form-single.vue
+
+<template>
+  <Form ref="form" v-if="config" :label-width="100" :rules="ruleData" :model="valueData">
+    <FormItem
+      :label="config.label"
+      :key="`${_uid}`"
+      label-position="left"
+      :prop="config.name"
+      :error="errorStore[config.name]"
+       @click.native="handleFocus(config.name)">
+      <!-- 动态组件写法 -->
+      <component :is="config.type" :range="config.range" v-model="valueData[config.name]">
+        <template v-if="config.children">
+          <component
+            v-for="(child, i) in config.children.list"
+            :is="config.children.type"
+            :value="child.value"
+            :label="child.label"
+            :key="`${_uid}_${i}`">{{ child.title }}
+        </component>
+        </template>
+      </component>
+    </FormItem>
+  </Form>
+</template>
+<script>
+export default {
+  name: 'FormSingle',
+  props: {
+    config: Object,
+    valueData: {
+      type: Object,
+      default: () => ({})
+    },
+    ruleData: {
+      type: Object,
+      default: () => ({})
+    },
+    errorStore: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  methods: {
+    handleFocus (name) {
+      this.errorStore[name] = ''
+    },
+    validate (callback) {
+      this.$refs.form.validate((valid) => {
+        callback(valid)
+      })
+    }
+  }
+}
+</script>
+```
+
 1）列表优化
 2）大型表单优化
 3）表格优化

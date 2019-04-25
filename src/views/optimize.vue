@@ -68,5 +68,5 @@ export default {
 .box{
   height: 300px;
   overflow: auto;
-} 
+}
 </style>

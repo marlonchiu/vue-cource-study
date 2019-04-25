@@ -91,8 +91,8 @@ export default {
           }).catch(error => {
             console.log(error)
             this.$emit('on-submit-error', error)
-            for (let key in error.response.data) {
-              this.errorStore[key] = error.response.data[key]
+            for (let key in error) {
+              this.errorStore[key] = error[key]
             }
           })
         } else {
@@ -103,9 +103,6 @@ export default {
     handleReset () {
       this.valueList = clonedeep(this.initValueList)
       // this.$refs[name].resetFields() 此方法不能用
-    },
-    handleFocus (name) {
-      this.errorStore[name] = ''
     }
   },
   watch: {
