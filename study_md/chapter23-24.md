@@ -354,3 +354,14 @@ export default {
 1）列表优化
 2）大型表单优化
 3）表格优化
+
+```text
+// 链接 https://github.com/lison16/vue-bigdata-table
+
+当复杂对象不需要频繁的更新的话可以把这个数据进行密封
+    Object.preventExtensions();   // ES5的方法
+    这样的话只可以改变这个对象的属性值，但是不可以增加新的属性
+    vue如果检测到某个对象被密封了，就不会进行getter setter了，从而减少性能开销
+  
+  this.$forceUpdate() 控制（强制）vue实例进行更新
+```
