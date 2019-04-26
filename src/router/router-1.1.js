@@ -1,126 +1,93 @@
-import Home from '@/views/Home.vue'
-import Layout from '@/views/layout.vue'
+import Home from '../views/Home.vue'
 export const routerMap = [
   {
-    path: '/home',
-    name: 'home',
-    component: Layout,
-    meta: {
-      title: '首页'
-    },
-    children: [
-      {
-        path: '/home_index',
-        name: 'home_index',
-        meta: {
-          title: '首页'
-        },
-        component: Home
-      }
-    ]
+    path: '/',
+    redirect: '/home'
   },
   {
     path: '/count-to',
     name: 'count_to',
-    meta: {
-      title: 'count_to'
-    },
     component: () => import('@/views/count-to.vue')
   },
   {
     path: '/menu-page',
     name: 'menu_page',
-    meta: {
-      title: 'menu_page'
-    },
     component: () => import('@/views/menu-page.vue')
   },
   {
     path: '/split-pane',
     name: 'split_pane',
-    meta: {
-      title: 'split_pane'
-    },
     component: () => import('@/views/split-pane.vue')
   },
   {
     path: '/render-page',
     name: 'render_page',
-    meta: {
-      title: 'render_pag'
-    },
     component: () => import('@/views/render-page.vue')
   },
   {
     path: '/upload',
     name: 'upload',
-    meta: {
-      title: 'upload'
-    },
     component: () => import('@/views/upload.vue')
   },
   {
     path: '/form',
     name: 'form',
-    meta: {
-      title: 'form'
-    },
     component: () => import('@/views/form.vue')
   },
   {
-    path: '/optimize',
-    name: 'optimize',
-    meta: {
-      title: 'optimize'
-    },
-    component: () => import('@/views/optimize.vue')
-  },
-  {
-    path: '/component',
-    name: 'component',
-    component: Layout,
-    meta: {
-      title: '组件'
-    },
+    path: '/layout',
+    name: 'layout',
+    component: () => import('@/views/layout.vue'),
     children: [
       {
         path: '/card',
         name: 'card',
-        meta: {
-          title: '卡片'
-        },
         component: () => import('@/components/card-block')
       },
       {
         path: '/table',
         name: 'table',
-        meta: {
-          title: '表格'
-        },
         component: () => import('@/views/table.vue')
       },
       {
         path: '/folder-tree',
         name: 'folder_tree',
-        meta: {
-          title: '文件夹'
-        },
         component: () => import('@/views/folder-tree/folder-tree.vue')
-      },
-      {
-        path: '/params/:id',
-        name: 'para',
-        meta: {
-          title: '参数'
-        },
-        component: () => import('@/components/argu.vue')
       }
     ]
+  },
+  {
+    path: '/argu/:name',
+    name: 'argu',
+    component: () => import('@/components/argu.vue')
+  },
+  {
+    path: '/',
+    name: 'home',
+    alias: '/home_page', // 别名
+    component: Home,
+    // props: route => {
+    //   return { }
+    // },
+    props: route => ({
+      food: route.query.food
+    }),
+    beforeEnter: (to, from, next) => {
+      // if (from.name === 'about') {
+      //   alert('我是从about页面来的')
+      // } else {
+      //   alert('我不是从about页面来的')
+      // }
+      next() // 所有逻辑执行完必须要next()
+    }
   },
   {
     path: '/about',
     name: 'about',
     alias: '/about_page', // 别名
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     props: {
       food: 'banana'
@@ -133,9 +100,6 @@ export const routerMap = [
   {
     path: '/named_view',
     name: 'named_view',
-    meta: {
-      title: 'named_view'
-    },
     components: {
       default: () => import('@/components/child.vue'),
       email: () => import('@/components/email.vue'),
@@ -144,10 +108,6 @@ export const routerMap = [
   },
   {
     path: '/main',
-    name: 'main',
-    meta: {
-      title: 'main'
-    },
     // redirect: '/',
     // redirect: {
     //   name: 'home'
@@ -165,9 +125,6 @@ export const routerMap = [
   {
     path: '/store',
     name: 'store',
-    meta: {
-      title: 'store'
-    },
     component: () => import('@/views/store.vue')
   }
 ]
@@ -177,10 +134,12 @@ export const routes = [
   {
     path: '/login',
     name: 'login',
-    meta: {
-      title: '登录'
-    },
     component: () => import('@/views/login.vue')
+  },
+  {
+    path: '/optimize',
+    name: 'optimize',
+    component: () => import('@/views/optimize.vue')
   },
   {
     path: '/icon_page',

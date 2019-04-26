@@ -1,8 +1,8 @@
 <template>
   <div class="layout-wrapper">
     <Layout class="layout-outer">
-      <Sider breakpoint="sm" :default-collapsed="false" collapsible hide-trigger v-model="collapsed" :width="200">
-        <side-menu :collapsed="collapsed" :list="menuList"></side-menu>
+      <Sider breakpoint="sm" :default-collapsed="false" collapsible hide-trigger v-model="collapsed" :width="200" class="sider-outer">
+        <side-menu :collapsed="collapsed" :list="routers"></side-menu>
       </Sider>
       <Layout>
         <Header class="header-wrapper">
@@ -19,6 +19,7 @@
 </template>
 <script>
 import SideMenu from '_c/side-menu'
+import { mapState } from 'vuex'
 export default {
   name: 'layout',
   data () {
@@ -73,6 +74,12 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      routers: state => state.router.routers.filter(item => {
+        // 登录和404页面过滤掉不显示到layout左侧导航栏
+        return item.path !== '*' && item.name !== 'login'
+      })
+    }),
     triggerClasses () {
       return [
         'trigger-icon',
@@ -104,6 +111,15 @@ export default {
         transform: rotateZ(-90deg);
         transition: transform .3s ease;
       }
+    }
+  }
+  .sider-outer{ // 定义导航栏的样式 超出隐藏滚动
+    height: 100%;
+    overflow: hidden;
+    .ivu-layout-sider-children{
+      margin-right: -20px; // 隐藏掉y方向滚动条
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
   }
   .content-wrapper{

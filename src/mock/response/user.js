@@ -80,3 +80,40 @@ export const getUserInfo = (options) => {
   // }
   // return Mock.mock(arr)
 }
+
+export const authorization = () => {
+  return {
+    code: 200,
+    data: {
+      token: 'xxx',
+      rules: {
+        page: {
+          home: true,
+          home_index: true,
+          about: true,
+          argu: true,
+          count_to: true,
+          menu_page: true,
+          upload: true,
+          form: true,
+          folder_tree: true,
+          table_page: true,
+          params: true,
+          component: true,
+          render_page: true,
+          split_pane: true,
+          parent: true,
+          child: true,
+          named_view: true,
+          store: true,
+          main: true
+        },
+        component: {
+          edit_button: true,
+          publish_button: false
+        }
+      }
+    },
+    mes: ''
+  }
+}
