@@ -111,6 +111,7 @@ export default {
   },
   watch: {
     '$route' (newRoute) {
+      console.log(newRoute)
       this.UPDATE_ROUTER(newRoute)
     }
   }

@@ -36,6 +36,48 @@ export const routerMap = [
     component: () => import('@/views/menu-page.vue')
   },
   {
+    path: '/component',
+    name: 'component',
+    component: Layout,
+    meta: {
+      title: '组件'
+    },
+    children: [
+      {
+        path: 'card',
+        name: 'card',
+        meta: {
+          title: '卡片'
+        },
+        component: () => import('@/components/card-block')
+      },
+      {
+        path: 'table',
+        name: 'table',
+        meta: {
+          title: '表格'
+        },
+        component: () => import('@/views/table.vue')
+      },
+      {
+        path: 'folder-tree',
+        name: 'folder_tree',
+        meta: {
+          title: '文件夹'
+        },
+        component: () => import('@/views/folder-tree/folder-tree.vue')
+      },
+      {
+        path: 'params/:id',
+        name: 'params',
+        meta: {
+          title: '参数'
+        },
+        component: () => import('@/components/argu.vue')
+      }
+    ]
+  },
+  {
     path: '/split-pane',
     name: 'split_pane',
     meta: {
@@ -74,48 +116,6 @@ export const routerMap = [
       title: 'optimize'
     },
     component: () => import('@/views/optimize.vue')
-  },
-  {
-    path: '/component',
-    name: 'component',
-    component: Layout,
-    meta: {
-      title: '组件'
-    },
-    children: [
-      {
-        path: '/card',
-        name: 'card',
-        meta: {
-          title: '卡片'
-        },
-        component: () => import('@/components/card-block')
-      },
-      {
-        path: '/table',
-        name: 'table',
-        meta: {
-          title: '表格'
-        },
-        component: () => import('@/views/table.vue')
-      },
-      {
-        path: '/folder-tree',
-        name: 'folder_tree',
-        meta: {
-          title: '文件夹'
-        },
-        component: () => import('@/views/folder-tree/folder-tree.vue')
-      },
-      {
-        path: '/params/:id',
-        name: 'params',
-        meta: {
-          title: '参数'
-        },
-        component: () => import('@/components/argu.vue')
-      }
-    ]
   },
   {
     path: '/about',
