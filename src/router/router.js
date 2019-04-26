@@ -109,7 +109,7 @@ export const routerMap = [
       },
       {
         path: '/params/:id',
-        name: 'para',
+        name: 'params',
         meta: {
           title: '参数'
         },

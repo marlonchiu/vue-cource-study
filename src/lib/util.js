@@ -1,6 +1,7 @@
 /* 用于与业务结合的工具方法 */
 import Cookies from 'js-cookie'
 import clonedeep from 'clonedeep'
+import { doCustomTimes, objEqual } from '@/lib/tools'
 
 export const setTitle = (title) => {
   window.document.title = title || 'admin'
@@ -106,4 +107,47 @@ export const downloadFile = ({ url, params }) => {
   document.body.appendChild(form)
   form.submit()
   form.remove()
+}
+
+// 判断两个路由相等
+export const routeEqual = (route1, route2) => {
+  const params1 = route1.params || {}
+  const params2 = route2.params || {}
+  const query1 = route1.query || {}
+  const query2 = route2.query || {}
+  return route1.name === route2.name && objEqual(params1, params2) && objEqual(query1, query2)
+}
+
+// 判断路由是否存在
+export const routeHasExist = (tabList, routeItem) => {
+  let len = tabList.length
+  let res = false
+  doCustomTimes(len, (index) => {
+    // 如果当前遍历到项跟当前要添加的routeItem相等 则返回true
+    if (routeEqual(tabList[index], routeItem)) res = true
+  })
+  return res
+}
+
+// 获取键值对
+const getKeyValueArr = obj => {
+  let arr = []
+  // 取出的键值对数组先排序一下，
+  // 因为如果属性值是一样的但是排序组合方式不同的话也会导致是不同的
+  Object.entries(obj).sort((a, b) => {
+    return a[0] - b[0]
+  }).forEach(([ _key, _val ]) => {
+    arr.push(_key, _val)
+  })
+  return arr
+}
+
+// 获取路由名称 'argu:id_111&tag_333_b_222'
+export const getTabNameByRoute = route => {
+  const { name, params, query } = route
+  let res = name
+  // 如果params存在且key的长度大于0 则拼接
+  if (params && Object.keys(params).length) res += ':' + getKeyValueArr(params).join('_')
+  if (query && Object.keys(query).length) res += '&' + getKeyValueArr(query).join('_')
+  return res
 }

@@ -25,7 +25,7 @@ router.get('/authorization', (req, res, next) => {
           home: true,
           home_index: true,
           about: true,
-          argu: true,
+          params: true,
           count_to: true,
           menu_page: true,
           layout: true,

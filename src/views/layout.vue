@@ -9,9 +9,17 @@
           <Icon :class="triggerClasses" @click.native="handleCollapsed" type="md-menu" size="32"></Icon>
         </Header>
         <Content class="content-wrapper">
-          <Card shadow class="page-card">
-            <router-view></router-view>
-          </Card>
+          <div>
+            <Tabs type="card" :animated="false" :value="getTabNameByRoute($route)">
+              <TabPane :label="item.meta.title" :name="getTabNameByRoute(item)"
+              v-for="(item, index) in tabList" :key="`tabNav${index}`"></TabPane>
+            </Tabs>
+          </div>
+          <div class="view-box">
+            <Card shadow class="page-card">
+              <router-view></router-view>
+            </Card>
+          </div>
         </Content>
       </Layout>
     </Layout>
@@ -19,11 +27,13 @@
 </template>
 <script>
 import SideMenu from '_c/side-menu'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import { getTabNameByRoute } from '@/lib/util'
 export default {
   name: 'layout',
   data () {
     return {
+      getTabNameByRoute,
       collapsed: false,
       menuList: [
         {
@@ -75,6 +85,7 @@ export default {
   },
   computed: {
     ...mapState({
+      tabList: state => state.tabNav.tabList,
       routers: state => state.router.routers.filter(item => {
         // 登录和404页面过滤掉不显示到layout左侧导航栏
         return item.path !== '*' && item.name !== 'login'
@@ -88,12 +99,20 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'UPDATE_ROUTER'
+    ]),
     handleCollapsed () {
       this.collapsed = !this.collapsed
     }
   },
   components: {
     SideMenu
+  },
+  watch: {
+    '$route' (newRoute) {
+      this.UPDATE_ROUTER(newRoute)
+    }
   }
 }
 </script>
@@ -123,7 +142,13 @@ export default {
     }
   }
   .content-wrapper{
-    padding: 10px;
+    padding: 0px; // 10px
+    .ivu-tabs-bar{
+      margin-bottom: 0;
+    }
+    .view-box{
+      padding: 0
+    }
     .page-card{
       // css3的计算属性 100vh表示页面高度的100% header默认高度64px 上下间距20px
       min-height: ~"calc(100vh - 20px - 64px)";

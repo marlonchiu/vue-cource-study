@@ -55,6 +55,9 @@ export default {
   methods: {
     handleSelect (name) {
       console.log(name)
+      this.$router.push({
+        name
+      })
     },
     handleIconSelect (name) {
       console.log(name)

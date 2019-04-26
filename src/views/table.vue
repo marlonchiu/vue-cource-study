@@ -2,6 +2,7 @@
   <div class="table-page">
     <!-- <edit-table :columns="columns" v-model="tableData" @on-edit="handleEdit"></edit-table> -->
     <edit-table-mul :columns="columns" v-model="tableData" @on-edit="handleEdit"></edit-table-mul>
+    <Button type="primary" @click="turnTo">打开参数页面</Button>
   </div>
 </template>
 <script>
@@ -27,6 +28,16 @@ export default {
   methods: {
     handleEdit ({ row, index, column, newVal }) {
       console.log({ row, index, column, newVal })
+    },
+    turnTo () {
+      // (Math.random() * 100).toFixed(0) 取整
+      let id = 'params' + Math.round(Math.random() * 100)
+      this.$router.push({
+        name: 'params',
+        params: {
+          id
+        }
+      })
     }
   },
   components: {
