@@ -2,7 +2,7 @@
   <div class="side-menu-wrapper">
     <slot name="top"></slot>
     <!-- 展开样式展示-->
-    <Menu v-show="!collapsed" width="auto" theme="dark" @on-select="handleSelect">
+    <Menu ref="menu" :active-name="$route.name" :open-names="openNames" v-show="!collapsed" width="auto" theme="dark" @on-select="handleSelect">
       <template v-for="item in list">
         <re-submenu
           v-if="item.children"
@@ -40,6 +40,8 @@
 <script>
 import ReSubmenu from './re-submenu.vue'
 import ReDropdown from './re-dropdown.vue'
+import { mapState } from 'vuex'
+import { getOpenArrByName } from '@/lib/util'
 export default {
   name: 'SideMenu',
   props: {
@@ -50,6 +52,22 @@ export default {
     list: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    ...mapState({
+      routers: state => state.router.routers
+    }),
+    openNames () {
+      return getOpenArrByName(this.$route.name, this.routers)
+    }
+  },
+  watch: {
+    openNames() {
+      this.$nextTick(() => {
+        // 手动更新展开的子目录，注意要在 $nextTick 里调用
+        this.$refs.menu.updateOpened()
+      })
     }
   },
   methods: {

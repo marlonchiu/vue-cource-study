@@ -10,7 +10,7 @@
         </Header>
         <Content class="content-wrapper">
           <div>
-            <Tabs type="card" :animated="false" :value="getTabNameByRoute($route)">
+            <Tabs @on-click="handleClickTab" type="card" :animated="false" :value="getTabNameByRoute($route)">
               <TabPane :label="item.meta.title" :name="getTabNameByRoute(item)"
               v-for="(item, index) in tabList" :key="`tabNav${index}`"></TabPane>
             </Tabs>
@@ -28,7 +28,7 @@
 <script>
 import SideMenu from '_c/side-menu'
 import { mapState, mapMutations } from 'vuex'
-import { getTabNameByRoute } from '@/lib/util'
+import { getTabNameByRoute, getRouteById } from '@/lib/util'
 export default {
   name: 'layout',
   data () {
@@ -104,6 +104,11 @@ export default {
     ]),
     handleCollapsed () {
       this.collapsed = !this.collapsed
+    },
+    handleClickTab (id) {
+      let route = getRouteById(id)
+      // console.log(route)
+      this.$router.push(route)
     }
   },
   components: {
@@ -111,7 +116,7 @@ export default {
   },
   watch: {
     '$route' (newRoute) {
-      console.log(newRoute)
+      // console.log(newRoute)
       this.UPDATE_ROUTER(newRoute)
     }
   }

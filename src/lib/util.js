@@ -142,7 +142,7 @@ const getKeyValueArr = obj => {
   return arr
 }
 
-// 获取路由名称 'argu:id_111&tag_333_b_222'
+// 获取路由名称 'argu:id_111&a_333_b_222'
 export const getTabNameByRoute = route => {
   const { name, params, query } = route
   let res = name
@@ -150,4 +150,66 @@ export const getTabNameByRoute = route => {
   if (params && Object.keys(params).length) res += ':' + getKeyValueArr(params).join('_')
   if (query && Object.keys(query).length) res += '&' + getKeyValueArr(query).join('_')
   return res
+}
+
+// 抽取切割路由id字符串的公共方法
+export const getObjBySplitStr = (id, splitStr) => {
+  let splitArr = id.split(splitStr)
+  let str = splitArr[splitArr.length - 1] // 切割得到的数组右边就是keyval拼接的字符串a_333_b_222
+  let keyValArr = str.split('_')
+  let res = {}
+  let i = 0
+  let len = keyValArr.length
+  while (i < len) {
+    res[keyValArr[i]] = keyValArr[i + 1]
+    i += 2
+  }
+  return res
+}
+
+// 获取路由的参数 params 和 query (根据路由名称逆向组织出路由条件)
+export const getRouteById = id => {
+  let res = {}
+  if (id.includes('&')) { // 根据字符换进行切割（判断是否有& 从知道是否有query
+    res.query = getObjBySplitStr(id, '&')
+    id = id.split('&')[0]
+    // let splitArr = id.split('&')
+    // let str = splitArr[splitArr.length - 1] // 切割得到的数组右边就是keyval拼接的字符串a_333_b_222
+    // let keyValArr = str.split('_')
+    // let res = {}
+    // let i = 0
+    // let len = keyValArr.length
+    // while (i < len) {
+    //   res[keyValArr[i]] = keyValArr[i + 1]
+    //   i += 2
+    // }
+  }
+  if (id.includes(':')) { // 根据字符换进行切割（判断是否有& 从知道是否有params
+    res.params = getObjBySplitStr(id, ':')
+    id = id.split(':')[0]
+  }
+  res.name = id
+  return res
+}
+
+// 根据当前激活的routername来判断有哪些要激活的父级 即展开的 Submenu 的 name 集合
+export const getOpenArrByName = (name, routerList) => {
+  let arr = []
+  // 此处使用some进行遍历为了效率的原因，
+  // forEach会遍历数组的所有即使已经找到后续的也会执行
+  // some 则找到了后续的其他就不在进行循环遍历
+  routerList.some(item => {
+    if (item.name === name) {
+      arr.push(item.name)
+      return true
+    }
+    if (item.children && item.children.length) {
+      let childArr = getOpenArrByName(name, item.children)
+      if (childArr.length) {
+        arr = arr.concat(item.name, childArr)
+        return true
+      }
+    }
+  })
+  return arr
 }
