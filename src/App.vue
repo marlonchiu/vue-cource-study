@@ -17,15 +17,25 @@
   </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
       routerTransition: ''
     }
   },
+  methods: {
+    ...mapMutations([
+      'UPDATE_ROUTER'
+    ])
+  },
   watch: {
-    '$route' (to) {
-      to.query && to.query.transitionName && (this.routerTransition = to.query.transitionName)
+    // '$route' (to) {
+    //   to.query && to.query.transitionName && (this.routerTransition = to.query.transitionName)
+    // }
+    '$route' (newRoute) {
+      // console.log(newRoute)
+      this.UPDATE_ROUTER(newRoute)
     }
   }
 }

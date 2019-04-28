@@ -246,13 +246,159 @@ computed: {
   }
 },
 watch: {
-  openNames() {
+  openNames () {
     this.$nextTick(() => {
       // 手动更新展开的子目录，注意要在 $nextTick 里调用
       this.$refs.menu.updateOpened()
     })
   }
 },
+```
+
+7.点击tab关闭的操作
+
+```JavaScript
+// 自定义label标题
+// 页面 layout.vue
+// Line 14  <TabPane :label="labelRender(item)"
+
+// methods中
+ ...mapActions([
+  'handleRemove'
+]),
+handleTabRemove (id, event) {
+  event.stopPropagation()
+  // console.log(id)
+  this.handleRemove({
+    id,
+    $route: this.$route
+  }).then(netxRoute => {
+    this.$router.push(netxRoute)
+  })
+},
+labelRender (item) {
+  return h => {
+    return (
+      <div>
+        <span>{item.meta.title}</span>
+        <icon type="md-close" nativeOn-click={this.handleTabRemove.bind(this, getTabNameByRoute(item))}></icon>
+      </div>
+    )
+  }
+}
+
+// tabNav.js store定义改变删除路由的方法
+// 多tab页存入的点开tab
+import { routeHasExist, getRouteById, routeEqual } from '@/lib/util'
+const state = {
+  tabList: []
+}
+
+const mutations = {
+  UPDATE_ROUTER (state, route) {
+    // 如果不存在才放入
+    if (!routeHasExist(state.tabList, route)) state.tabList.push(route)
+  },
+  REMOVE_TAB (state, index) {
+    state.tabList.splice(index, 1)
+  }
+}
+
+const actions = {
+  handleRemove ({ commit }, { id, $route }) {
+    return new Promise((resolve) => {
+      let route = getRouteById(id)
+      let index = state.tabList.findIndex(item => {
+        return routeEqual(route, item)
+      })
+      let len = state.tabList.length
+      // 定义关闭后的跳转路由
+      let nextRoute = {}
+      if (routeEqual($route, state.tabList[index])) {
+        // 如果关闭tab后边还有打开的就跳转到后边的一个
+        if (index < len - 1) nextRoute = state.tabList[index + 1]
+        // 如果关闭tab后边没有打开的就跳转到前边的一个
+        else nextRoute = state.tabList[index - 1]
+      }
+      const { name, params, query } = nextRoute || { name: 'home_index' }
+      commit('REMOVE_TAB', index)
+      resolve({
+        name, params, query
+      })
+    })
+  }
+}
+
+export default {
+  state,
+  mutations,
+  actions
+}
+```
+
+8.刷新页面直接打开的标签都没有了
+
+```javaScript
+// 定义本地存储读取的方法 tableList 都从本地读取localStorage中来
+
+// 本地存储读取方法
+// @/lib/util.js
+export const localSave = (name, value) => {
+  return localStorage.setItem(name, value)
+}
+
+export const localRead = (name) => {
+  return localStorage.getItem(name)
+}
+
+// tabNav.js
++ import { routeHasExist, getRouteById, routeEqual, localSave, localRead } from '@/lib/util'
+const state = {
+  // tabList: []
+  // tabList从本地读
+  tabList: JSON.parse(localRead('tabList') || '[]')
+}
+
+const getTabListToLocal = tabList => {
+  // 只保存有效的信息即可
+  return tabList.map(item => {
+    return {
+      name: item.name,
+      path: item.path,
+      meta: item.meta,
+      params: item.params,
+      query: item.query
+    }
+  })
+}
+
+const mutations = {
+  UPDATE_ROUTER (state, route) {
+    // 如果不存在才放入
+    if (!routeHasExist(state.tabList, route)) state.tabList.push(route)
++    localSave('tabList', JSON.stringify(getTabListToLocal(state.tabList)))
+  },
+  REMOVE_TAB (state, index) {
+    state.tabList.splice(index, 1)
++    localSave('tabList', JSON.stringify(getTabListToLocal(state.tabList)))
+  }
+}
+```
+
+9.第一次点击没有增加tab ???
+
+```javaScript
+// 原因在于路由上来说，home页面使用的是Layout组件，而component页面也是使用的Layout组件
+// 当我们点击的时候，相当于Layout组件进行了重置，所以layout.vue Line147行
+watch: {
+  '$route' (newRoute) {
+    // console.log(newRoute)
+    this.UPDATE_ROUTER(newRoute)
+  }
+}
+// 这个方法页面都没有生成，就不存在监听路由的改变了，可以把监听页面放在App.vue中进行优化
+
+// 注意要把login页面过滤掉，否则也会生成tab
 ```
 
 3）菜单、URL和标签联动

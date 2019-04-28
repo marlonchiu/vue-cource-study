@@ -63,7 +63,7 @@ export default {
     }
   },
   watch: {
-    openNames() {
+    openNames () {
       this.$nextTick(() => {
         // 手动更新展开的子目录，注意要在 $nextTick 里调用
         this.$refs.menu.updateOpened()

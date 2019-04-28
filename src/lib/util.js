@@ -213,3 +213,12 @@ export const getOpenArrByName = (name, routerList) => {
   })
   return arr
 }
+
+// 本地存储读取方法
+export const localSave = (name, value) => {
+  return localStorage.setItem(name, value)
+}
+
+export const localRead = (name) => {
+  return localStorage.getItem(name)
+}

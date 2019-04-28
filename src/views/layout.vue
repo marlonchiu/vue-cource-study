@@ -11,7 +11,7 @@
         <Content class="content-wrapper">
           <div>
             <Tabs @on-click="handleClickTab" type="card" :animated="false" :value="getTabNameByRoute($route)">
-              <TabPane :label="item.meta.title" :name="getTabNameByRoute(item)"
+              <TabPane :label="labelRender(item)" :name="getTabNameByRoute(item)"
               v-for="(item, index) in tabList" :key="`tabNav${index}`"></TabPane>
             </Tabs>
           </div>
@@ -27,7 +27,7 @@
 </template>
 <script>
 import SideMenu from '_c/side-menu'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import { getTabNameByRoute, getRouteById } from '@/lib/util'
 export default {
   name: 'layout',
@@ -100,7 +100,10 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'UPDATE_ROUTER'
+      // 'UPDATE_ROUTER'
+    ]),
+    ...mapActions([
+      'handleRemove'
     ]),
     handleCollapsed () {
       this.collapsed = !this.collapsed
@@ -109,17 +112,37 @@ export default {
       let route = getRouteById(id)
       // console.log(route)
       this.$router.push(route)
+    },
+    handleTabRemove (id, event) {
+      event.stopPropagation()
+      // console.log(id)
+      this.handleRemove({
+        id,
+        $route: this.$route
+      }).then(netxRoute => {
+        this.$router.push(netxRoute)
+      })
+    },
+    labelRender (item) {
+      return h => {
+        return (
+          <div>
+            <span>{item.meta.title}</span>
+            <icon type="md-close" nativeOn-click={this.handleTabRemove.bind(this, getTabNameByRoute(item))}></icon>
+          </div>
+        )
+      }
     }
   },
   components: {
     SideMenu
-  },
-  watch: {
-    '$route' (newRoute) {
-      // console.log(newRoute)
-      this.UPDATE_ROUTER(newRoute)
-    }
   }
+  // watch: {
+  //   '$route' (newRoute) {
+  //     // console.log(newRoute)
+  //     this.UPDATE_ROUTER(newRoute)
+  //   }
+  // }
 }
 </script>
 <style lang="less">
