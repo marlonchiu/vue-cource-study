@@ -18,7 +18,7 @@ export default {
   beforeRouteUpdate (to, from, next) {
     // 此时this是存在的  是可以使用的
     console.log(to.name, from.name)
-    // next()
+    next()
   }
 }
 </script>
