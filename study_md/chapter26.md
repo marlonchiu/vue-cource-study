@@ -54,7 +54,12 @@ docker exec -it -u root 容器id /bin/bash
 jenkins admin user
 用户名 admin
 密码 admin_123
-全名 Administrator
+全名 Administrator  真实中文名字就可以的
+
+
+删除容器
+可以使用"docker rm 容器id"来删除一个终止状态的容器；  docker rm 容器id
+若要删除一个运行中的容器，需要加-f参数。  docker rm -f 容器id
 ```
 
 * Nginx配置
