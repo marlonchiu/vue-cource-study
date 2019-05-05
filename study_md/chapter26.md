@@ -7,59 +7,50 @@
 
 ```text
 // docker环境下安装Jenkins
-E:\DockerStudy
 
-docker run -itd -p 9090:8080 -p 50000:50000 --name jenkins --privileged=true  -v /home/jenkins:/var/jenkins_home jenkins:latest
+// 操作流程
+拉取镜像
+    docker pull jenkins
+创建容器
+    docker run -itd -p 8899:8080 -p 50000:50000 --name myjenkins --privileged=true  -v ~/jenkins:/var/jenkins_home jenkins
+    参数说明
+        -d：让容器在后台运行
+        -p：将容器内部使用的网络端口映射到我们使用的主机上
+        --name：将容器命名为my_jenkins
+进入容器
+    docker exec -it -u root 容器id /bin/bash
+浏览器输入网址打开
+    http://192.168.99.100:8899
 
-+ docker run -itd -p 8899:8080 -p 50000:50000 --name jenkins --privileged=true  -v ~/jenkins:/var/jenkins_home jenkins
 
-docker run -u root --rm --name jenkinsci -d -p 8080:8080 -p 50000:50000 -v E:\jenkins\jkdata:/var/jenkins_home jenkinsci/blueocean
+* docker基本指令
+// 查看所有容器
 docker ps -a
-
-mkdir -p /jenkins_home && chown -R 1000:1000 /home/docker/jenkins
-docker run -it -d --restart always --name hjenkins -p 2453:8080 -p 50000:50000 -v /jenkins_home:/var/jenkins_home jenkins
-
-
-docker run -u root --rm -d -p 8080:8080 -p 50000:50000 -v jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/blueocean
-
-docker exec -it jenkins-blueocean bash
-
-
-
-
-docker pull jenkins/jenkins
-
-为了方便安装插件，因此将jenkins_home目录映射出来
-docker run -p 8080:8080 -p 50000:50000 -v /home/docker/jenkins:/var/jenkins_home jenkins
-
-报错：
-touch: cannot touch ‘/var/jenkins_home/copy_reference_file.log’: Permission denied
-Can not write to /var/jenkins_home/copy_reference_file.log. Wrong volume permissions?
-
-需要修改下目录权限, 因为当映射本地数据卷时，/home/docker/jenkins目录的拥有者为root用户，而容器中jenkins user的uid为1000
-chown -R 1000:1000 /home/docker/jenkins
-
-查看所有容器
-docker ps -a
-
-docker exec -it jenkins-blueocean bash
-
-docker run -d -p 8080:8080 -v $PWD/jenkins:/var/jenkins_home -t jenkins
-
-把/var/jenkins_home映射到 'jenkins/'目录下。
 
 // 进入容器
 docker exec -it -u root 容器id /bin/bash
+docker exec -it -u root f5b3e7dfba1f /bin/bash
 
+// 删除容器
+可以使用"docker rm 容器id"来删除一个终止状态的容器；  docker rm 容器id
+若要删除一个运行中的容器，需要加-f参数。  docker rm -f 容器id
+
+// 创建jenkins账号
 jenkins admin user
 用户名 admin
 密码 admin_123
-全名 Administrator  真实中文名字就可以的
+全名 MarlonChiu  /  Administrator  真实中文名字就可以的
 
+指南  https://www.cnblogs.com/xiaochengzi/p/6203002.html
+1）选择安装插件（第一个建议安装），有安装失败的暂时先不管继续下一步创建账号，
+2）进入Jenkins管理页面，由于插件安装失败，页面显示很多红色的错误
+    （插件下载失败原因：因为镜像在国外下载插件过程中，某些插件下载失败或者中断会引起其他有依赖关系的插件也下载失败）
+原来的路径：http://updates.jenkins-ci.org/update-center.json
+替换路径：http://mirror.xmission.com/jenkins/updates/current/update-center.json
 
-删除容器
-可以使用"docker rm 容器id"来删除一个终止状态的容器；  docker rm 容器id
-若要删除一个运行中的容器，需要加-f参数。  docker rm -f 容器id
+重启 restart
+退出 exit
+重载 reload
 ```
 
 * Nginx配置
