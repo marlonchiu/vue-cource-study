@@ -15,8 +15,9 @@
     docker run -itd -p 8899:8080 -p 50000:50000 --name myjenkins --privileged=true  -v ~/jenkins:/var/jenkins_home jenkins/jenkins:lts
     参数说明
         -d：让容器在后台运行
-        -p：将容器内部使用的网络端口映射到我们使用的主机上
+        -p：将容器内部使用的网络端口映射到我们使用的主机上  将容器的8899端口映射到主机的8080端口
         --name：将容器命名为myjenkins
+        -v 指的是自定义配置jenkins目录，最后的参数jenkins指的是使用的是本地的jenkins镜像
 进入容器
     docker exec -it -u root 容器id /bin/bash
     *   docker exec -it -u root 1bdfa4c1f3a1 /bin/bash（我的容器）
@@ -38,6 +39,18 @@ docker exec -it -u root 容器id /bin/bash
 // 删除容器
 可以使用"docker rm 容器id"来删除一个终止状态的容器；  docker rm 容器id
 若要删除一个运行中的容器，需要加-f参数。  docker rm -f 容器id
+
+
+//查看所有的docker容器：
+    docker container ls -a
+//终止容器：
+    docker container stop 
+//启动容器：
+    docker container start
+//重启容器：
+    docker container restart
+//删除容器：
+    docker container rm
 
 // 创建jenkins账号
 jenkins admin user
@@ -82,3 +95,23 @@ docker run -itd -p 9980:8080 -p 50000:50000  --restart always -v /apps/Devops/je
 ```
 
 * Nginx配置
+
+* 自动化部署测试
+
+```text
+* 学习指导 jenkins+docker+github实现项目自动部署(上)  https://www.jianshu.com/p/d36a4a08ee55
+
+* github授权，关联项目
+    06ea6d87334cea5fb5d7b7b290bcb8bdb542230f
+
+* 视频教程构建指令
+    name=vue-cource-study
+    npm install
+    npm run build
+    rm -rf node_modules
+    rm -rf $name
+    mv dist $name
+    tar jcvf $name.tar.bz2 $name
+    scp $name.tar.bz2 $name root@10.0.192.93:/usr/local/product
+    ssh root@10.0.192.93  "rm -rf /usr/local/product/vue-cource-study; cd /usr/local/product; tar -xvf $name.tar.bz2"
+```
